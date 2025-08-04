@@ -3088,6 +3088,7 @@ drawable ic_device
 drawable ic_devices
 drawable ic_heart_rate
 drawable ic_keyboard_black_24dp
+drawable ic_launcher_sensacare
 drawable ic_location
 drawable ic_m3_chip_check
 drawable ic_m3_chip_checked_circle
@@ -3371,6 +3372,7 @@ id design_menu_item_action_area
 id design_menu_item_action_area_stub
 id design_menu_item_text
 id design_navigation_view
+id deviceRecyclerView
 id diagnosticButton
 id dialog_button
 id dimensions
@@ -3613,8 +3615,10 @@ id prevPageButton
 id progressBar
 id progressContainer
 id progressIndicator
+id progressScan
 id progress_circular
 id progress_horizontal
+id progress_signal_strength
 id radio
 id rangeSpinner
 id ratio
@@ -3761,6 +3765,10 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
+id tv_device_address
+id tv_device_name
+id tv_rssi
+id tv_signal_strength
 id unchecked
 id uniform
 id unlabeled
@@ -3928,6 +3936,7 @@ layout fragment_diagnostic
 layout fragment_vitals_timeline
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
+layout item_ble_device
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title

@@ -77,12 +77,12 @@
 43        android:extractNativeLibs="false"
 44        android:fullBackupContent="@xml/backup_rules"
 44-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:29:9-54
-45        android:icon="@android:drawable/sym_def_app_icon"
-45-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:30:9-58
+45        android:icon="@drawable/ic_launcher_sensacare"
+45-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:30:9-55
 46        android:label="Sensacare App"
 46-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:31:9-38
-47        android:roundIcon="@android:drawable/sym_def_app_icon"
-47-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:32:9-63
+47        android:roundIcon="@drawable/ic_launcher_sensacare"
+47-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:32:9-60
 48        android:supportsRtl="true"
 48-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:33:9-35
 49        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >

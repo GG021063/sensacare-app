@@ -16,6 +16,10 @@
         "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_admin.xml"
     },
     {
+        "merged": "com.sensacare.veepoo.app-mergeDebugResources-52:/layout/item_ble_device.xml",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/item_ble_device.xml"
+    },
+    {
         "merged": "com.sensacare.veepoo.app-mergeDebugResources-52:/layout/activity_onboarding.xml",
         "source": "com.sensacare.veepoo.app-main-55:/layout/activity_onboarding.xml"
     },

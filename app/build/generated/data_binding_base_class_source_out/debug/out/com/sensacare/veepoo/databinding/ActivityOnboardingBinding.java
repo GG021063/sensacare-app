@@ -11,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.sensacare.veepoo.R;
 import java.lang.NullPointerException;
@@ -30,6 +32,9 @@ public final class ActivityOnboardingBinding implements ViewBinding {
   public final LinearLayout buttonContainer;
 
   @NonNull
+  public final RecyclerView deviceRecyclerView;
+
+  @NonNull
   public final Button nextButton;
 
   @NonNull
@@ -37,6 +42,9 @@ public final class ActivityOnboardingBinding implements ViewBinding {
 
   @NonNull
   public final LinearProgressIndicator progressIndicator;
+
+  @NonNull
+  public final CircularProgressIndicator progressScan;
 
   @NonNull
   public final Button skipButton;
@@ -54,16 +62,20 @@ public final class ActivityOnboardingBinding implements ViewBinding {
   public final TextView stepTitle;
 
   private ActivityOnboardingBinding(@NonNull ConstraintLayout rootView, @NonNull Button backButton,
-      @NonNull LinearLayout buttonContainer, @NonNull Button nextButton,
-      @NonNull LinearLayout progressContainer, @NonNull LinearProgressIndicator progressIndicator,
-      @NonNull Button skipButton, @NonNull TextView stepCounter, @NonNull TextView stepDescription,
+      @NonNull LinearLayout buttonContainer, @NonNull RecyclerView deviceRecyclerView,
+      @NonNull Button nextButton, @NonNull LinearLayout progressContainer,
+      @NonNull LinearProgressIndicator progressIndicator,
+      @NonNull CircularProgressIndicator progressScan, @NonNull Button skipButton,
+      @NonNull TextView stepCounter, @NonNull TextView stepDescription,
       @NonNull ImageView stepImage, @NonNull TextView stepTitle) {
     this.rootView = rootView;
     this.backButton = backButton;
     this.buttonContainer = buttonContainer;
+    this.deviceRecyclerView = deviceRecyclerView;
     this.nextButton = nextButton;
     this.progressContainer = progressContainer;
     this.progressIndicator = progressIndicator;
+    this.progressScan = progressScan;
     this.skipButton = skipButton;
     this.stepCounter = stepCounter;
     this.stepDescription = stepDescription;
@@ -110,6 +122,12 @@ public final class ActivityOnboardingBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.deviceRecyclerView;
+      RecyclerView deviceRecyclerView = ViewBindings.findChildViewById(rootView, id);
+      if (deviceRecyclerView == null) {
+        break missingId;
+      }
+
       id = R.id.nextButton;
       Button nextButton = ViewBindings.findChildViewById(rootView, id);
       if (nextButton == null) {
@@ -125,6 +143,12 @@ public final class ActivityOnboardingBinding implements ViewBinding {
       id = R.id.progressIndicator;
       LinearProgressIndicator progressIndicator = ViewBindings.findChildViewById(rootView, id);
       if (progressIndicator == null) {
+        break missingId;
+      }
+
+      id = R.id.progressScan;
+      CircularProgressIndicator progressScan = ViewBindings.findChildViewById(rootView, id);
+      if (progressScan == null) {
         break missingId;
       }
 
@@ -159,8 +183,8 @@ public final class ActivityOnboardingBinding implements ViewBinding {
       }
 
       return new ActivityOnboardingBinding((ConstraintLayout) rootView, backButton, buttonContainer,
-          nextButton, progressContainer, progressIndicator, skipButton, stepCounter,
-          stepDescription, stepImage, stepTitle);
+          deviceRecyclerView, nextButton, progressContainer, progressIndicator, progressScan,
+          skipButton, stepCounter, stepDescription, stepImage, stepTitle);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -51,6 +51,7 @@ drawable ic_dashboard
 drawable ic_device
 drawable ic_devices
 drawable ic_heart_rate
+drawable ic_launcher_sensacare
 drawable ic_location
 drawable ic_notification
 drawable ic_settings
@@ -101,6 +102,7 @@ id consentTypeSpinner
 id dateRangeSpinner
 id debugModeSwitch
 id debugModeText
+id deviceRecyclerView
 id diagnosticButton
 id emptyStateText
 id eventTypeSpinner
@@ -135,6 +137,8 @@ id prevPageButton
 id progressBar
 id progressContainer
 id progressIndicator
+id progressScan
+id progress_signal_strength
 id rangeSpinner
 id refreshButton
 id rpmAlertText
@@ -160,6 +164,10 @@ id temperatureChart
 id temperatureValue
 id timelineButton
 id timelineRecyclerView
+id tv_device_address
+id tv_device_name
+id tv_rssi
+id tv_signal_strength
 id usernameInput
 id vitalsRecyclerView
 id vitalsStatusText
@@ -171,6 +179,7 @@ layout fragment_consent
 layout fragment_dashboard
 layout fragment_diagnostic
 layout fragment_vitals_timeline
+layout item_ble_device
 menu bottom_navigation_menu
 style TextAppearance.Sensacare.Body1
 style TextAppearance.Sensacare.Body2

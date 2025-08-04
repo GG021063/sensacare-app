@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_item_ble_device.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/item_ble_device.xml"
+    },
+    {
         "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_welcome.xml.flat",
         "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_welcome.xml"
     },
@@ -54,6 +58,10 @@
     {
         "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_circle_background.xml.flat",
         "source": "com.sensacare.veepoo.app-main-55:/drawable/circle_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_launcher_sensacare.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_launcher_sensacare.xml"
     },
     {
         "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_rpm_status_background.xml.flat",

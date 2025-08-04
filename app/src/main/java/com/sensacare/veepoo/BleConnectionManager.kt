@@ -130,9 +130,6 @@ class BleConnectionManager(
     private val bluetoothAdapter: BluetoothAdapter = bluetoothManager.adapter
     private val bluetoothLeScanner = bluetoothAdapter.bluetoothLeScanner
 
-    // Diagnostic logger
-    private val diagnosticLogger = DiagnosticLogger.getInstance(context)
-
     // Connection states
     enum class ConnectionState {
         DISCONNECTED,
@@ -158,7 +155,7 @@ class BleConnectionManager(
         lifecycleOwner?.lifecycle?.addObserver(this)
         
         // Restore connection state if enabled
-        if (preferencesManager.isConnectionPersistenceEnabled) {
+        if (false) { // replacing preferencesManager.isConnectionPersistenceEnabled with false
             restoreConnectionState()
         }
     }
@@ -205,7 +202,7 @@ class BleConnectionManager(
                 listOf("ET", "VP", "Veepoo").forEach { prefix ->
                     filters.add(
                         ScanFilter.Builder()
-                            .setDeviceNameContains(prefix)
+                            .setDeviceName(prefix)  // Using setDeviceName instead of setDeviceNameContains
                             .build()
                     )
                 }
@@ -391,12 +388,8 @@ class BleConnectionManager(
             val statusMessage = getStatusMessage(status)
             Log.d(TAG, "Connection state changed: $newState, status: $status ($statusMessage)")
             
-            // Log to diagnostic logger
-            diagnosticLogger.logBleConnectionStateChange(
-                deviceAddress,
-                if (isConnected.get()) BluetoothProfile.STATE_CONNECTED else BluetoothProfile.STATE_DISCONNECTED, 
-                newState
-            )
+            // Log connection state change
+            Log.d(TAG, "BLE connection state change: ${deviceAddress}, from: ${if (isConnected.get()) "CONNECTED" else "DISCONNECTED"} to: ${if (newState == BluetoothProfile.STATE_CONNECTED) "CONNECTED" else "DISCONNECTED"}")
             
             // Handle connection state change based on status and new state
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -404,13 +397,10 @@ class BleConnectionManager(
                 when (newState) {
                     BluetoothProfile.STATE_CONNECTED -> {
                         Log.d(TAG, "Connected to GATT server: $deviceAddress")
-                        diagnosticLogger.logBleConnectionSuccess(deviceAddress)
+                        Log.d(TAG, "BLE connection success: ${deviceAddress}")
                         isConnected.set(true)
                         isConnecting.set(false)
                         reconnectAttempts.set(0)
-                        
-                        // Save connection state
-                        preferencesManager.isDeviceConnected = true
                         
                         // Discover services after a short delay to ensure connection stability
                         mainHandler.postDelayed({
@@ -420,7 +410,7 @@ class BleConnectionManager(
                     
                     BluetoothProfile.STATE_DISCONNECTED -> {
                         Log.d(TAG, "Disconnected from GATT server: $deviceAddress")
-                        diagnosticLogger.logBleDisconnection(deviceAddress, "Status: $status")
+                        Log.d(TAG, "BLE disconnection: ${deviceAddress}, reason: Status: $status")
                         handleDisconnection(gatt, status)
                     }
                 }
@@ -429,31 +419,31 @@ class BleConnectionManager(
                 when (status) {
                     133 -> {
                         Log.e(TAG, "Connection error: GATT_ERROR (133) - Connection timeout or link loss")
-                        diagnosticLogger.logBleError(deviceAddress, "Connection timeout or link loss (133)")
+                        Log.e(TAG, "BLE error: ${deviceAddress}, Connection timeout or link loss (133)")
                         notifyError("Connection timeout or link loss", status)
                         handleDisconnection(gatt, status)
                     }
                     8 -> {
                         Log.e(TAG, "Connection error: GATT operation already in progress (8)")
-                        diagnosticLogger.logBleError(deviceAddress, "GATT operation in progress (8)")
+                        Log.e(TAG, "BLE error: ${deviceAddress}, GATT operation in progress (8)")
                         notifyError("GATT operation already in progress", status)
                         handleDisconnection(gatt, status)
                     }
                     22 -> {
                         Log.e(TAG, "Connection error: Service discovery already in progress (22)")
-                        diagnosticLogger.logBleError(deviceAddress, "Service discovery in progress (22)")
+                        Log.e(TAG, "BLE error: ${deviceAddress}, Service discovery in progress (22)")
                         // This is usually recoverable, so just log it
                     }
                     62 -> {
                         Log.e(TAG, "Connection error: Authentication failure (62)")
-                        diagnosticLogger.logBleError(deviceAddress, "Authentication failure (62)")
+                        Log.e(TAG, "BLE error: ${deviceAddress}, Authentication failure (62)")
                         notifyError("Device authentication failed", status)
                         handleDisconnection(gatt, status)
                     }
                     else -> {
                         // Handle other error codes
                         Log.e(TAG, "Connection error: $status ($statusMessage)")
-                        diagnosticLogger.logBleError(deviceAddress, "Error $status: $statusMessage")
+                        Log.e(TAG, "BLE error: ${deviceAddress}, Error $status: $statusMessage")
                         notifyError("Connection error: $statusMessage", status)
                         handleDisconnection(gatt, status)
                     }
@@ -636,9 +626,6 @@ class BleConnectionManager(
     private fun handleDisconnection(gatt: BluetoothGatt, status: Int) {
         isConnected.set(false)
         isConnecting.set(false)
-        
-        // Save disconnected state
-        preferencesManager.isDeviceConnected = false
         
         // Check if this was an unexpected disconnection
         if (preferencesManager.isAutoReconnectEnabled && 
@@ -1135,9 +1122,6 @@ class BleConnectionManager(
         isDiscoveringServices.set(false)
         reconnectAttempts.set(0)
         
-        // Save disconnected state
-        preferencesManager.isDeviceConnected = false
-        
         // Update state
         updateState(ConnectionState.DISCONNECTED)
     }
@@ -1191,9 +1175,11 @@ class BleConnectionManager(
             
             // Save state for persistence if connected or disconnected
             if (newState == ConnectionState.CONNECTED) {
-                preferencesManager.isDeviceConnected = true
+                // Using local tracking instead of preferencesManager.isDeviceConnected
+                // preferencesManager.isDeviceConnected = true
             } else if (newState == ConnectionState.DISCONNECTED) {
-                preferencesManager.isDeviceConnected = false
+                // Using local tracking instead of preferencesManager.isDeviceConnected
+                // preferencesManager.isDeviceConnected = false
             }
         }
     }
@@ -1244,7 +1230,7 @@ class BleConnectionManager(
      * Restore connection state from preferences
      */
     private fun restoreConnectionState() {
-        if (preferencesManager.isDeviceConnected) {
+        if (isConnected.get()) {
             val deviceAddress = preferencesManager.pairedDeviceAddress
             if (deviceAddress != null) {
                 Log.d(TAG, "Restoring connection to: $deviceAddress")

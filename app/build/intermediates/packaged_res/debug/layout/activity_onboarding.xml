@@ -95,6 +95,29 @@
                 android:lineSpacingExtra="4dp"
                 tools:text="This app connects to your medical devices to monitor your vital signs. Let's get you set up!" />
 
+            <!-- Circular progress shown while BLE scan is active -->
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressScan"
+                style="@style/Widget.Material3.CircularProgressIndicator"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:visibility="gone"
+                android:indeterminate="true"
+                app:indicatorColor="@color/primary"
+                app:layout_constraintHorizontal_bias="0.5"
+                tools:visibility="visible" />
+
+            <!-- Recycler-view that lists scanned BLE devices (initially hidden) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/deviceRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="300dp"
+                android:overScrollMode="never"
+                android:visibility="gone"
+                tools:listitem="@layout/item_ble_device" />
+
         </LinearLayout>
 
     </ScrollView>
