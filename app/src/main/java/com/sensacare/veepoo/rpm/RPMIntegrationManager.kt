@@ -177,7 +177,9 @@ class RPMIntegrationManager(private val context: Context) {
             
             // Update device metadata in client context
             val metadata = deviceSDKManager.getDeviceMetadata()
-            metadata?.let { clientContextManager.setDeviceMetadata(it) }
+            metadata?.let { meta ->
+                clientContextManager.setDeviceMetadata(convertToRPMDeviceMetadata(meta))
+            }
             
             _rpmStatus.value = RPMStatus.MONITORING
             Log.d(TAG, "Device connected and monitoring started successfully")
@@ -257,6 +259,22 @@ class RPMIntegrationManager(private val context: Context) {
         }
     }
     
+    /**
+     * Convert SDK-level DeviceMetadata into the type expected by the
+     * RPMClientContextManager so that the client context can be updated
+     * without type-mismatch compilation errors.
+     */
+    private fun convertToRPMDeviceMetadata(
+        metadata: DeviceMetadata
+    ): RPMClientContextManager.DeviceMetadata =
+        RPMClientContextManager.DeviceMetadata(
+            type = metadata.type,
+            mac = metadata.mac,
+            firmware = metadata.firmware,
+            battery = metadata.battery,
+            sdkVersion = metadata.sdkVersion
+        )
+
     /**
      * Get recent alerts from RPM
      */

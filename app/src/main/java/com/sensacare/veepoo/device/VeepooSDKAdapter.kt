@@ -6,6 +6,7 @@ import android.util.Log
 import com.sensacare.veepoo.VitalsData
 import com.sensacare.veepoo.VeepooDataManager
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.resume
 
 /**
@@ -27,16 +28,10 @@ class VeepooSDKAdapter(private val context: Context) : DeviceSDK {
         return try {
             Log.d(TAG, "Connecting to Veepoo device: ${device.address}")
             
-            // Use the existing Veepoo connection logic
-            val success = veepooDataManager.connectToDevice(device.address)
-            
-            if (success) {
-                Log.d(TAG, "Successfully connected to Veepoo device")
-            } else {
-                Log.e(TAG, "Failed to connect to Veepoo device")
-            }
-            
-            success
+            // Use the existing Veepoo connection logic (no boolean return)
+            veepooDataManager.connect(device)
+            Log.d(TAG, "Successfully invoked Veepoo connect()")
+            true
         } catch (e: Exception) {
             Log.e(TAG, "Error connecting to Veepoo device", e)
             false
@@ -53,15 +48,9 @@ class VeepooSDKAdapter(private val context: Context) : DeviceSDK {
             }
             
             // Use the existing Veepoo disconnection logic
-            val success = veepooDataManager.disconnectFromDevice()
-            
-            if (success) {
-                Log.d(TAG, "Successfully disconnected from Veepoo device")
-            } else {
-                Log.e(TAG, "Failed to disconnect from Veepoo device")
-            }
-            
-            success
+            veepooDataManager.disconnect()
+            Log.d(TAG, "Successfully invoked Veepoo disconnect()")
+            true
         } catch (e: Exception) {
             Log.e(TAG, "Error disconnecting from Veepoo device", e)
             false
@@ -75,23 +64,17 @@ class VeepooSDKAdapter(private val context: Context) : DeviceSDK {
             // Store the callback
             onVitalsCallback = onVitalsReceived
             
-            // Set up vitals data listener using existing VeepooDataManager
-            veepooDataManager.setVitalsDataListener { vitalsData ->
+            // Observe LiveData from VeepooDataManager
+            veepooDataManager.vitalsData.observeForever { vitalsData ->
                 Log.d(TAG, "Received vitals data from Veepoo: $vitalsData")
                 onVitalsCallback?.invoke(vitalsData)
             }
             
-            // Start monitoring using existing logic
-            val success = veepooDataManager.startVitalsMonitoring()
-            
-            if (success) {
-                isMonitoring = true
-                Log.d(TAG, "Successfully started Veepoo vitals monitoring")
-            } else {
-                Log.e(TAG, "Failed to start Veepoo vitals monitoring")
-            }
-            
-            success
+            // Start scan / monitoring using existing logic
+            veepooDataManager.startScan()
+            isMonitoring = true
+            Log.d(TAG, "Successfully started Veepoo vitals monitoring")
+            true
         } catch (e: Exception) {
             Log.e(TAG, "Error starting Veepoo vitals monitoring", e)
             false
@@ -103,17 +86,11 @@ class VeepooSDKAdapter(private val context: Context) : DeviceSDK {
             Log.d(TAG, "Stopping Veepoo vitals monitoring")
             
             // Stop monitoring using existing logic
-            val success = veepooDataManager.stopVitalsMonitoring()
-            
-            if (success) {
-                isMonitoring = false
-                onVitalsCallback = null
-                Log.d(TAG, "Successfully stopped Veepoo vitals monitoring")
-            } else {
-                Log.e(TAG, "Failed to stop Veepoo vitals monitoring")
-            }
-            
-            success
+            veepooDataManager.stopScan()
+            isMonitoring = false
+            onVitalsCallback = null
+            Log.d(TAG, "Successfully stopped Veepoo vitals monitoring")
+            true
         } catch (e: Exception) {
             Log.e(TAG, "Error stopping Veepoo vitals monitoring", e)
             false
@@ -164,10 +141,17 @@ class VeepooSDKAdapter(private val context: Context) : DeviceSDK {
             Log.d(TAG, "Cleaning up Veepoo SDK adapter")
             
             if (isMonitoring) {
-                stopVitalsMonitoring()
+                // cleanup() is not a suspend-function, so invoke the suspend call
+                // synchronously using runBlocking to avoid compiler errors.
+                runBlocking {
+                    stopVitalsMonitoring()
+                }
             }
             
-            veepooDataManager.cleanup()
+            // Ensure we release the active GATT connection even if monitoring
+            // is already stopped.  VeepooDataManager exposes disconnect() but
+            // not a `cleanup()` helper.
+            veepooDataManager.disconnect()
             onVitalsCallback = null
             
             Log.d(TAG, "Veepoo SDK adapter cleanup completed")

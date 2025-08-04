@@ -232,7 +232,7 @@ class SecureApiManager(private val context: Context) {
                     Log.d(TAG, "Token refreshed successfully")
                 }
             } else {
-                throw IOException("Token refresh failed: ${response.code}")
+            throw IOException("Token refresh failed: ${response.code()}")
             }
         } catch (e: Exception) {
             Log.e(TAG, "Token refresh failed", e)
@@ -329,8 +329,8 @@ class SecureApiManager(private val context: Context) {
                 Log.d(TAG, "Vitals uploaded successfully")
                 Result.success(Unit)
             } else {
-                Log.e(TAG, "Vitals upload failed: ${response.code}")
-                Result.failure(IOException("Upload failed: ${response.code}"))
+                Log.e(TAG, "Vitals upload failed: ${response.code()}")
+                Result.failure(IOException("Upload failed: ${response.code()}"))
             }
         } catch (e: Exception) {
             Log.e(TAG, "Vitals upload error", e)
@@ -350,8 +350,8 @@ class SecureApiManager(private val context: Context) {
                     Result.success(authResponse)
                 } ?: Result.failure(IOException("Empty response"))
             } else {
-                Log.e(TAG, "Login failed: ${response.code}")
-                Result.failure(IOException("Login failed: ${response.code}"))
+                Log.e(TAG, "Login failed: ${response.code()}")
+                Result.failure(IOException("Login failed: ${response.code()}"))
             }
         } catch (e: Exception) {
             Log.e(TAG, "Login error", e)

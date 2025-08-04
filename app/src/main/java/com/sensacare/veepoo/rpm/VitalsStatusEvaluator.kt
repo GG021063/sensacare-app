@@ -10,8 +10,9 @@ import java.util.concurrent.TimeUnit
 class VitalsStatusEvaluator {
     
     companion object {
-        private const val MAX_SENSOR_DISCONNECTION_TIME_MS = TimeUnit.HOURS.toMillis(1) // 1 hour
-        private const val DATA_FRESHNESS_THRESHOLD_MS = TimeUnit.MINUTES.toMillis(5) // 5 minutes
+        /*  Compile-time constants (avoid TimeUnit calls which are not allowed for `const`) */
+        private const val MAX_SENSOR_DISCONNECTION_TIME_MS = 3_600_000L // 1 hour
+        private const val DATA_FRESHNESS_THRESHOLD_MS = 300_000L        // 5 minutes
     }
     
     /**

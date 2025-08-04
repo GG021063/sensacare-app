@@ -142,8 +142,15 @@ class GenericBLESDKAdapter(private val context: Context) : DeviceSDK {
         try {
             Log.d(TAG, "Cleaning up generic BLE SDK adapter")
             
+            /*
+             * If monitoring is active we need to call the suspend
+             * `stopVitalsMonitoring()` function.  Because `cleanup()` is not a
+             * suspend function we invoke it synchronously using `runBlocking`.
+             */
             if (isMonitoring) {
-                stopVitalsMonitoring()
+                kotlinx.coroutines.runBlocking {
+                    stopVitalsMonitoring()
+                }
             }
             
             onVitalsCallback = null

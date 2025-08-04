@@ -86,10 +86,14 @@ class VitalsDashboardFragment : Fragment() {
     }
 
     private fun updateVitalsDisplay(vitals: VitalsEntity) {
-        binding.heartRateText.text = "HR: ${vitals.heartRate ?: "--"} bpm"
-        binding.bloodPressureText.text = "BP: ${vitals.bloodPressureSystolic ?: "--"}/${vitals.bloodPressureDiastolic ?: "--"} mmHg"
-        binding.spo2Text.text = "SpO2: ${vitals.spo2 ?: "--"}%"
-        binding.temperatureText.text = "Temp: ${vitals.temperature ?: "--"}°C"
+        binding.heartRateValue.text =
+            "${vitals.heartRate?.toString() ?: "--"}"
+        binding.bloodPressureValue.text =
+            "${vitals.bloodPressureSystolic?.toString() ?: "--"}/${vitals.bloodPressureDiastolic?.toString() ?: "--"}"
+        binding.spo2Value.text =
+            "${vitals.spo2?.toString() ?: "--"}"
+        binding.temperatureValue.text =
+            "${vitals.temperature?.toString() ?: "--"}"
     }
 
     // Note: Alert handling is now managed by RPM system
@@ -180,12 +184,16 @@ class VitalsDashboardFragment : Fragment() {
                     connectionManager.disconnect()
                     Toast.makeText(context, "Disconnecting from device", Toast.LENGTH_SHORT).show()
                 }
-                BleConnectionManager.ConnectionState.CONNECTING, BleConnectionManager.ConnectionState.RECONNECTING -> {
+                BleConnectionManager.ConnectionState.CONNECTING, 
+                BleConnectionManager.ConnectionState.RECONNECTING,
+                BleConnectionManager.ConnectionState.SCANNING,
+                BleConnectionManager.ConnectionState.DISCOVERING_SERVICES -> {
                     // Cancel connection attempt
                     connectionManager.disconnect()
                     Toast.makeText(context, "Connection cancelled", Toast.LENGTH_SHORT).show()
                 }
-                BleConnectionManager.ConnectionState.DISCONNECTED, BleConnectionManager.ConnectionState.ERROR -> {
+                BleConnectionManager.ConnectionState.DISCONNECTED, 
+                BleConnectionManager.ConnectionState.ERROR -> {
                     // Connect to device
                     if (preferencesManager.isDevicePaired()) {
                         connectionManager.connectToLastKnownDevice()
@@ -212,9 +220,9 @@ class VitalsDashboardFragment : Fragment() {
             }
         }
 
-        connectionManager.setErrorCallback { error ->
+        connectionManager.setErrorCallback { message, statusCode ->
             activity?.runOnUiThread {
-                showConnectionError(error)
+                showConnectionError(message)
             }
         }
     }
@@ -237,6 +245,20 @@ class VitalsDashboardFragment : Fragment() {
             )
             BleConnectionManager.ConnectionState.RECONNECTING -> ConnectionStatusInfo(
                 "Reconnecting to Veepoo device...",
+                R.drawable.ic_bluetooth_connecting,
+                "#FFC107", // Yellow
+                "Cancel",
+                true
+            )
+            BleConnectionManager.ConnectionState.SCANNING -> ConnectionStatusInfo(
+                "Scanning for devices...",
+                R.drawable.ic_bluetooth_connecting,
+                "#FFC107", // Yellow
+                "Cancel",
+                true
+            )
+            BleConnectionManager.ConnectionState.DISCOVERING_SERVICES -> ConnectionStatusInfo(
+                "Discovering services...",
                 R.drawable.ic_bluetooth_connecting,
                 "#FFC107", // Yellow
                 "Cancel",
@@ -379,12 +401,21 @@ class VitalsDashboardFragment : Fragment() {
         }
     }
 
-    private fun updateVitalsDisplayFromRPM(vitalsData: com.sensacare.veepoo.rpm.VitalsData) {
-        // Convert rpm.VitalsData to regular VitalsData for display
-        binding.heartRateText.text = "HR: ${vitalsData.heartRate ?: "--"} bpm"
-        binding.bloodPressureText.text = "BP: ${vitalsData.bloodPressureSystolic ?: "--"}/${vitalsData.bloodPressureDiastolic ?: "--"} mmHg"
-        binding.spo2Text.text = "SpO2: ${vitalsData.spo2 ?: "--"}%"
-        binding.temperatureText.text = "Temp: ${vitalsData.temperature ?: "--"}°C"
+    /**
+     * Update the on-screen vitals values using data coming back from the
+     * RPM layer.  The RPMIntegrationManager exposes the shared
+     * `com.sensacare.veepoo.VitalsData` model, so we should consume that
+     * same type here instead of the RPM-internal variant.
+     */
+    private fun updateVitalsDisplayFromRPM(vitalsData: com.sensacare.veepoo.VitalsData) {
+        binding.heartRateValue.text =
+            "${vitalsData.heartRate?.toString() ?: "--"}"
+        binding.bloodPressureValue.text =
+            "${vitalsData.bloodPressureSystolic?.toString() ?: "--"}/${vitalsData.bloodPressureDiastolic?.toString() ?: "--"}"
+        binding.spo2Value.text =
+            "${vitalsData.spo2?.toString() ?: "--"}"
+        binding.temperatureValue.text =
+            "${vitalsData.temperature?.toString() ?: "--"}"
     }
 
     private fun showRPMSetupDialog() {

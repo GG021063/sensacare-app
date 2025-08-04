@@ -25,6 +25,8 @@ class BleForegroundService : Service() {
     
     private val dataBuffer = mutableListOf<VitalsData>()
     private var lastUploadTime = 0L
+    /** Helper so existing coroutine-loop checks compile cleanly */
+    private val isActive get() = serviceScope.isActive
     
     companion object {
         private const val TAG = "BleForegroundService"
@@ -139,6 +141,12 @@ class BleForegroundService : Service() {
                 BleConnectionManager.ConnectionState.ERROR -> {
                     updateNotification("Connection error - Check device")
                 }
+                BleConnectionManager.ConnectionState.SCANNING -> {
+                    updateNotification("Scanning for devices…")
+                }
+                BleConnectionManager.ConnectionState.DISCOVERING_SERVICES -> {
+                    updateNotification("Discovering services…")
+                }
             }
         }
 
@@ -147,9 +155,9 @@ class BleForegroundService : Service() {
             Log.d(TAG, "Vitals buffered: HR=${vitalsData.heartRate}, BP=${vitalsData.bloodPressureSystolic}/${vitalsData.bloodPressureDiastolic}")
         }
 
-        connectionManager.setErrorCallback { error ->
-            Log.e(TAG, "Connection error: $error")
-            updateNotification("Connection error: $error")
+        connectionManager.setErrorCallback { message, _ ->
+            Log.e(TAG, "Connection error: $message")
+            updateNotification("Connection error: $message")
         }
     }
 
@@ -195,11 +203,8 @@ class BleForegroundService : Service() {
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val device = result.device
-            val diagnosticLogger = DiagnosticLogger.getInstance(this@BleForegroundService)
-            
-            // Log diagnostic information
-            diagnosticLogger.logBleScan(device.name, device.address, result.rssi, result.scanRecord)
-            Log.d(TAG, "Found device: ${device.name ?: "Unknown"} - ${device.address}")
+            // Log basic scan info
+            Log.d(TAG, "Found device: ${device.name ?: "Unknown"} - ${device.address}, rssi=${result.rssi}, adv=${result.scanRecord?.bytes?.size ?: 0}B")
             
             // Filter for Veepoo devices
             if (device.name?.contains("Veepoo", ignoreCase = true) == true || 
@@ -216,8 +221,6 @@ class BleForegroundService : Service() {
         }
 
         override fun onScanFailed(errorCode: Int) {
-            val diagnosticLogger = DiagnosticLogger.getInstance(this@BleForegroundService)
-            diagnosticLogger.logBleScanFailed(errorCode)
             Log.e(TAG, "Scan failed with error: $errorCode")
         }
     }

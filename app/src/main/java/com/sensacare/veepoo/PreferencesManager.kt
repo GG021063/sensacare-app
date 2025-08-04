@@ -103,6 +103,8 @@ class PreferencesManager(context: Context) {
             when {
                 hr < heartRateMinThreshold -> alerts.add("Heart rate too low: ${hr} bpm")
                 hr > heartRateMaxThreshold -> alerts.add("Heart rate too high: ${hr} bpm")
+                // Heart-rate is inside the configured range – nothing to report
+                else -> { /* no-op */ }
             }
         }
 

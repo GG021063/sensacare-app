@@ -2,6 +2,7 @@ package com.sensacare.veepoo.rpm
 
 import android.content.Context
 import android.util.Log
+import com.sensacare.veepoo.rpm.VitalsData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -196,7 +197,10 @@ class TimelineDataOptimizer(private val context: Context) {
                     vitals = if (parts[2].isNotEmpty() || parts[3].isNotEmpty()) {
                         VitalsData(
                             heartRate = parts[2].toIntOrNull(),
-                            spo2 = parts[3].toIntOrNull()
+                            bloodPressureSystolic = null,
+                            bloodPressureDiastolic = null,
+                            spo2 = parts[3].toIntOrNull(),
+                            temperature = null
                         )
                     } else null,
                     alertMessage = null

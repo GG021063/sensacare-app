@@ -1,9 +1,8 @@
 package com.sensacare.veepoo.rpm
 
 import android.bluetooth.BluetoothDevice
-import com.sensacare.veepoo.VitalsData
+import com.sensacare.veepoo.VitalsData as AppVitalsData
 import com.sensacare.veepoo.VitalsEntity
-import kotlin.math.abs
 
 class VitalsPayloadBuilder(
     private val clientContextManager: RPMClientContextManager
@@ -24,7 +23,7 @@ class VitalsPayloadBuilder(
      * Build RPM-ready payload from VitalsData
      */
     fun buildPayload(
-        vitalsData: VitalsData,
+        vitalsData: AppVitalsData,
         device: BluetoothDevice?,
         rssi: Int?,
         timestamp: Long = System.currentTimeMillis()
@@ -69,7 +68,7 @@ class VitalsPayloadBuilder(
     }
     
     /**
-     * Build device status payload for heartbeat
+     * Build device status payload for heartbeat / connectivity reporting
      */
     fun buildDeviceStatusPayload(
         connected: Boolean,
@@ -77,9 +76,8 @@ class VitalsPayloadBuilder(
         firmware: String? = null
     ): DeviceStatusPayload? {
         val clientId = clientContextManager.getClientId() ?: return null
-        
         val deviceMetadata = clientContextManager.getDeviceMetadata()
-        
+
         return DeviceStatusPayload(
             clientId = clientId,
             lastSync = TimestampUtils.formatTimestamp(clientContextManager.getLastSync()),
@@ -88,7 +86,7 @@ class VitalsPayloadBuilder(
             firmware = firmware ?: deviceMetadata?.firmware ?: "unknown"
         )
     }
-    
+
     /**
      * Build sync gap report
      */
@@ -120,7 +118,11 @@ class VitalsPayloadBuilder(
         )
     }
     
-    private fun convertToRPMVitals(vitalsData: VitalsData): VitalsData {
+    /**
+     * Convert application-layer vitals model to the RPM wire-format model that
+     * the backend expects.  Only field names differ, so we copy values 1-to-1.
+     */
+    private fun convertToRPMVitals(vitalsData: AppVitalsData): VitalsData {
         return VitalsData(
             heartRate = vitalsData.heartRate,
             bloodPressureSystolic = vitalsData.bloodPressureSystolic,
@@ -144,7 +146,7 @@ class VitalsPayloadBuilder(
      * Calculate confidence score based on multiple factors
      */
     private fun calculateConfidence(
-        vitalsData: VitalsData,
+        vitalsData: AppVitalsData,
         rssi: Int?,
         timestamp: Long
     ): Double {
@@ -160,7 +162,7 @@ class VitalsPayloadBuilder(
     }
     
     private fun calculateConfidenceFromEntity(entity: VitalsEntity): Double {
-        val vitalsData = VitalsData(
+        val vitalsData = AppVitalsData(
             heartRate = entity.heartRate,
             bloodPressureSystolic = entity.bloodPressureSystolic,
             bloodPressureDiastolic = entity.bloodPressureDiastolic,
@@ -190,7 +192,7 @@ class VitalsPayloadBuilder(
     /**
      * Calculate confidence based on data completeness
      */
-    private fun calculateDataCompleteness(vitalsData: VitalsData): Double {
+    private fun calculateDataCompleteness(vitalsData: AppVitalsData): Double {
         val totalFields = 5
         val presentFields = listOfNotNull(
             vitalsData.heartRate,
@@ -224,7 +226,7 @@ class VitalsPayloadBuilder(
     /**
      * Validate vitals data for RPM upload
      */
-    fun validateVitalsForUpload(vitalsData: VitalsData): ValidationResult {
+    fun validateVitalsForUpload(vitalsData: AppVitalsData): ValidationResult {
         val errors = mutableListOf<String>()
         val warnings = mutableListOf<String>()
         
@@ -242,6 +244,7 @@ class VitalsPayloadBuilder(
                 hr <= 0 -> errors.add("Invalid heart rate: $hr")
                 hr > 250 -> warnings.add("Unusually high heart rate: $hr")
                 hr < 30 -> warnings.add("Unusually low heart rate: $hr")
+                else -> { /* Heart-rate value within normal range */ }
             }
         }
         
@@ -250,6 +253,7 @@ class VitalsPayloadBuilder(
                 spo2 < 70 -> errors.add("Invalid SpO2: $spo2%")
                 spo2 > 100 -> errors.add("Invalid SpO2: $spo2%")
                 spo2 < 90 -> warnings.add("Low SpO2: $spo2%")
+                else -> { /* SpO₂ value within normal range */ }
             }
         }
         
@@ -258,6 +262,7 @@ class VitalsPayloadBuilder(
                 temp < 30.0 -> errors.add("Invalid temperature: ${temp}°C")
                 temp > 45.0 -> errors.add("Invalid temperature: ${temp}°C")
                 temp > 40.0 -> warnings.add("High temperature: ${temp}°C")
+                else -> { /* Temperature value within normal range */ }
             }
         }
         
