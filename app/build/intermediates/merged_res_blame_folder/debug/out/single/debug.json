@@ -1,0 +1,230 @@
+[
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_welcome.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_welcome.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_timeline.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_timeline.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_consent_summary_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/consent_summary_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_warning.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_warning.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_fragment_admin.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_admin.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_fragment_dashboard.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_dashboard.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_threshold.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_threshold.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_temperature.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_temperature.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_admin_section_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/admin_section_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_alert_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/alert_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_location.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_location.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/xml_data_extraction_rules.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_activity_login.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_circle_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/circle_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_rpm_status_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/rpm_status_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_admin_button_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/admin_button_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_button_primary.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/button_primary.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_settings.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_blood_pressure.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_blood_pressure.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_fragment_consent.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_consent.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_progress_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/progress_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_spo2.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_spo2.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_add.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_add.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_policy_text_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/policy_text_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_trend_up.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_trend_up.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_bluetooth_disconnected.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_bluetooth_disconnected.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_consent_section_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/consent_section_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_log_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/log_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_connection_action_button.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/connection_action_button.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/xml_backup_rules.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_progress_foreground.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/progress_foreground.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_bluetooth.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_bluetooth.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_device.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_device.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_fragment_diagnostic.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_diagnostic.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_rpm_alert_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/rpm_alert_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/menu_bottom_navigation_menu.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/menu/bottom_navigation_menu.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_devices.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_devices.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_connection_banner_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/connection_banner_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_activity_onboarding.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/activity_onboarding.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_activity_main.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_trend_down.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_trend_down.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_notification.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_notification.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_secondary_button_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/secondary_button_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_bluetooth_connecting.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_bluetooth_connecting.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_spinner_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/spinner_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_stats_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/stats_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_primary_button_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/primary_button_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_timeline_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/timeline_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_control_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/control_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_button_outline.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/button_outline.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_critical.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_critical.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_heart_rate.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_heart_rate.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_edit_text_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/edit_text_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_recycler_background.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/recycler_background.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_dashboard.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_dashboard.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/drawable_ic_bluetooth_connected.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/drawable/ic_bluetooth_connected.xml"
+    },
+    {
+        "merged": "com.sensacare.veepoo.app-merged_res-53:/layout_fragment_vitals_timeline.xml.flat",
+        "source": "com.sensacare.veepoo.app-main-55:/layout/fragment_vitals_timeline.xml"
+    }
+]
