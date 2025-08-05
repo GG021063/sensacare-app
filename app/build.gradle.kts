@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")            // Re-enable annotation processing for Room
+    // Kotlin Serialization plugin for Supabase & JSON parsing
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -63,6 +65,21 @@ dependencies {
     
     // Security
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    /* -------------------------------------------------------------------------
+     *  Supabase Kotlin Client
+     *  (PostgREST / GoTrue / Storage) + Ktor client dependencies
+     * ------------------------------------------------------------------------- */
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.0.4")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.0.4")
+    // Ktor client
+    implementation("io.ktor:ktor-client-android:2.3.7")
+    implementation("io.ktor:ktor-client-core:2.3.7")
+    implementation("io.ktor:ktor-utils:2.3.7")
+
+    // Kotlinx-serialization (JSON) – required by Supabase client
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.1")

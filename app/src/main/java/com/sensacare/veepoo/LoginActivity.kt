@@ -9,10 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sensacare.veepoo.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
+import io.github.jan.supabase.gotrue.user.UserInfo
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var secureApiManager: SecureApiManager
+    private lateinit var supabaseManager: SupabaseManager
     private val prefs by lazy {
         getSharedPreferences("SensacareAppPrefs", MODE_PRIVATE)
     }
@@ -26,10 +27,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        secureApiManager = SecureApiManager(this)
+        supabaseManager = SupabaseManager(this)
 
         // Check if user is already authenticated
-        if (secureApiManager.isAuthenticated()) {
+        if (supabaseManager.getCurrentUserId() != null) {
             Log.d(TAG, "User already authenticated")
             if (hasCompletedOnboarding()) {
                 proceedToMainActivity()
@@ -69,10 +70,10 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val result = secureApiManager.login(username, password)
+                val result = supabaseManager.signIn(username, password)
                 result.fold(
-                    onSuccess = { authResponse ->
-                        Log.d(TAG, "Login successful for user: ${authResponse.userId}")
+                    onSuccess = { userInfo: UserInfo ->
+                        Log.d(TAG, "Login successful for user: ${userInfo.email}")
                         Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
                         if (hasCompletedOnboarding()) {
                             proceedToMainActivity()
@@ -122,6 +123,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        secureApiManager.cleanup()
+        supabaseManager.cleanup()
     }
 } 

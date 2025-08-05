@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.sensacare.veepoo.app-mergeDebugResources-51:/values-v24/values-v24.xml",
+            "outputFile": "com.sensacare.veepoo.app-mergeDebugResources-52:/values-v24/values-v24.xml",
             "map": [
                 {
                     "source": "C:\\Users\\graha\\.gradle\\caches\\transforms-3\\45389b7cc1ad5b86473cbeb2847b56e2\\transformed\\material-1.11.0\\res\\values-v24\\values-v24.xml",

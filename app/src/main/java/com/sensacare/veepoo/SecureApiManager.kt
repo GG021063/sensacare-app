@@ -27,6 +27,10 @@ class SecureApiManager(private val context: Context) {
         private const val KEY_REFRESH_TOKEN = "refresh_token"
         private const val KEY_TOKEN_EXPIRY = "token_expiry"
         private const val KEY_USER_ID = "user_id"
+
+        // Demo-mode hard-coded credentials (for on-device testing without backend)
+        private const val DEMO_USERNAME = "admin@sensacare.com"
+        private const val DEMO_PASSWORD = "admin123"
     }
 
     // Encrypted storage for tokens
@@ -339,6 +343,26 @@ class SecureApiManager(private val context: Context) {
     }
 
     suspend fun login(username: String, password: String): Result<AuthResponse> {
+        /* -----------------------------------------------------------------
+         *  DEMO AUTHENTICATION
+         *  If user enters hard-coded demo credentials skip real API call
+         * ----------------------------------------------------------------- */
+        if (username.equals(DEMO_USERNAME, ignoreCase = true) && password == DEMO_PASSWORD) {
+            val demoAuth = AuthResponse(
+                accessToken = "demo-token",
+                refreshToken = "demo-refresh",
+                expiryTime = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(7),
+                userId = "demo"
+            )
+            // Persist tokens so the rest of the app behaves normally
+            setAccessToken(demoAuth.accessToken, demoAuth.expiryTime)
+            setRefreshToken(demoAuth.refreshToken ?: "")
+            setUserId(demoAuth.userId ?: "")
+            Log.i(TAG, "Demo login successful")
+            return Result.success(demoAuth)
+        }
+
+        // Otherwise proceed with real API authentication
         return try {
             val response = apiService.login(LoginRequest(username, password))
             if (response.isSuccessful) {
