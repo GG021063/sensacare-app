@@ -46,11 +46,11 @@
         android:label="Sensacare App"
         android:roundIcon="@drawable/ic_launcher_sensacare"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
         <activity
             android:name="com.sensacare.veepoo.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,12 +60,12 @@
         <activity
             android:name="com.sensacare.veepoo.OnboardingActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
         </activity>
         <activity
             android:name="com.sensacare.veepoo.MainActivity"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
         </activity>
 
         <!-- Foreground Service for BLE monitoring -->
