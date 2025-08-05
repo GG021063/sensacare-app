@@ -8,15 +8,36 @@
     android:padding="32dp"
     android:background="@color/white">
 
-    <!-- Logo/Title -->
+    <!-- Sensacare logo -->
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_launcher_sensacare"
+        android:contentDescription="Sensacare App"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Heading -->
     <TextView
+        android:id="@+id/welcomeHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sensacare App"
-        android:textSize="28sp"
+        android:text="Welcome to Sensacare"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary"
-        android:layout_marginBottom="48dp" />
+        android:layout_marginBottom="8dp" />
+
+    <!-- Tagline -->
+    <TextView
+        android:id="@+id/welcomeTagline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect your device and monitor your vitals effortlessly"
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
 
     <!-- Username Input -->
     <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +83,17 @@
         android:textSize="16sp"
         android:padding="16dp"
         style="@style/Widget.Sensacare.Button.Primary" />
+
+    <!-- Get Started / Onboarding Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/getStartedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="New User? Get Started"
+        android:textSize="14sp"
+        android:padding="12dp"
+        style="?attr/materialButtonOutlinedStyle" />
 
     <!-- Progress Bar -->
     <ProgressBar

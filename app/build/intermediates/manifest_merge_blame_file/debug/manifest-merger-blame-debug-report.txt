@@ -85,35 +85,35 @@
 47-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:32:9-60
 48        android:supportsRtl="true"
 48-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:33:9-35
-49        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
-49-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:34:9-77
+49        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+49-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:34:9-65
 50        <activity
-50-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:37:9-41:20
+50-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:37:9-45:20
 51            android:name="com.sensacare.veepoo.LoginActivity"
 51-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:38:13-42
 52            android:exported="true"
 52-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:39:13-36
-53            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
-53-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:40:13-81
-54        </activity>
-55        <activity
-55-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:9-51:20
-56            android:name="com.sensacare.veepoo.OnboardingActivity"
-56-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:44:13-47
-57            android:exported="true"
-57-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:45:13-36
-58            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
-58-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:46:13-81
-59            <intent-filter>
-59-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:47:13-50:29
-60                <action android:name="android.intent.action.MAIN" />
-60-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:17-69
-60-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:25-66
-61
-62                <category android:name="android.intent.category.LAUNCHER" />
-62-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:17-77
-62-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:27-74
-63            </intent-filter>
+53            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+53-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:40:13-69
+54            <intent-filter>
+54-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:41:13-44:29
+55                <action android:name="android.intent.action.MAIN" />
+55-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:42:17-69
+55-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:42:25-66
+56
+57                <category android:name="android.intent.category.LAUNCHER" />
+57-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:17-77
+57-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:27-74
+58            </intent-filter>
+59        </activity>
+60        <activity
+60-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:47:9-51:20
+61            android:name="com.sensacare.veepoo.OnboardingActivity"
+61-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:13-47
+62            android:exported="true"
+62-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:13-36
+63            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+63-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:50:13-69
 64        </activity>
 65        <activity
 65-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:53:9-57:20
@@ -121,8 +121,8 @@
 66-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:54:13-41
 67            android:exported="false"
 67-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:55:13-37
-68            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
-68-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:56:13-81
+68            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+68-->C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:56:13-69
 69        </activity>
 70
 71        <!-- Foreground Service for BLE monitoring -->

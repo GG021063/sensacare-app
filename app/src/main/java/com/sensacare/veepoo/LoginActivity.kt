@@ -13,6 +13,9 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var secureApiManager: SecureApiManager
+    private val prefs by lazy {
+        getSharedPreferences("SensacareAppPrefs", MODE_PRIVATE)
+    }
 
     companion object {
         private const val TAG = "LoginActivity"
@@ -27,12 +30,17 @@ class LoginActivity : AppCompatActivity() {
 
         // Check if user is already authenticated
         if (secureApiManager.isAuthenticated()) {
-            Log.d(TAG, "User already authenticated, proceeding to main activity")
-            proceedToMainActivity()
+            Log.d(TAG, "User already authenticated")
+            if (hasCompletedOnboarding()) {
+                proceedToMainActivity()
+            } else {
+                goToOnboarding()
+            }
             return
         }
 
         setupLoginButton()
+        setupGetStartedButton()
     }
 
     private fun setupLoginButton() {
@@ -49,6 +57,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupGetStartedButton() {
+        binding.getStartedButton.setOnClickListener {
+            goToOnboarding()
+        }
+    }
+
     private fun performLogin(username: String, password: String) {
         binding.progressBar.visibility = View.VISIBLE
         binding.loginButton.isEnabled = false
@@ -60,7 +74,11 @@ class LoginActivity : AppCompatActivity() {
                     onSuccess = { authResponse ->
                         Log.d(TAG, "Login successful for user: ${authResponse.userId}")
                         Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                        proceedToMainActivity()
+                        if (hasCompletedOnboarding()) {
+                            proceedToMainActivity()
+                        } else {
+                            goToOnboarding()
+                        }
                     },
                     onFailure = { exception ->
                         Log.e(TAG, "Login failed", exception)
@@ -84,6 +102,16 @@ class LoginActivity : AppCompatActivity() {
                 binding.loginButton.isEnabled = true
             }
         }
+    }
+
+    private fun hasCompletedOnboarding(): Boolean {
+        return prefs.getBoolean("onboarding_completed", false)
+    }
+
+    private fun goToOnboarding() {
+        val intent = Intent(this, OnboardingActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun proceedToMainActivity() {

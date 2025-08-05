@@ -4,6 +4,7 @@ package com.sensacare.veepoo.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,7 +24,13 @@ public final class ActivityLoginBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final MaterialButton getStartedButton;
+
+  @NonNull
   public final MaterialButton loginButton;
+
+  @NonNull
+  public final ImageView logoImage;
 
   @NonNull
   public final TextView offlineQueueStatus;
@@ -37,15 +44,28 @@ public final class ActivityLoginBinding implements ViewBinding {
   @NonNull
   public final TextInputEditText usernameInput;
 
-  private ActivityLoginBinding(@NonNull LinearLayout rootView, @NonNull MaterialButton loginButton,
-      @NonNull TextView offlineQueueStatus, @NonNull TextInputEditText passwordInput,
-      @NonNull ProgressBar progressBar, @NonNull TextInputEditText usernameInput) {
+  @NonNull
+  public final TextView welcomeHeading;
+
+  @NonNull
+  public final TextView welcomeTagline;
+
+  private ActivityLoginBinding(@NonNull LinearLayout rootView,
+      @NonNull MaterialButton getStartedButton, @NonNull MaterialButton loginButton,
+      @NonNull ImageView logoImage, @NonNull TextView offlineQueueStatus,
+      @NonNull TextInputEditText passwordInput, @NonNull ProgressBar progressBar,
+      @NonNull TextInputEditText usernameInput, @NonNull TextView welcomeHeading,
+      @NonNull TextView welcomeTagline) {
     this.rootView = rootView;
+    this.getStartedButton = getStartedButton;
     this.loginButton = loginButton;
+    this.logoImage = logoImage;
     this.offlineQueueStatus = offlineQueueStatus;
     this.passwordInput = passwordInput;
     this.progressBar = progressBar;
     this.usernameInput = usernameInput;
+    this.welcomeHeading = welcomeHeading;
+    this.welcomeTagline = welcomeTagline;
   }
 
   @Override
@@ -75,9 +95,21 @@ public final class ActivityLoginBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.getStartedButton;
+      MaterialButton getStartedButton = ViewBindings.findChildViewById(rootView, id);
+      if (getStartedButton == null) {
+        break missingId;
+      }
+
       id = R.id.loginButton;
       MaterialButton loginButton = ViewBindings.findChildViewById(rootView, id);
       if (loginButton == null) {
+        break missingId;
+      }
+
+      id = R.id.logoImage;
+      ImageView logoImage = ViewBindings.findChildViewById(rootView, id);
+      if (logoImage == null) {
         break missingId;
       }
 
@@ -105,8 +137,21 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLoginBinding((LinearLayout) rootView, loginButton, offlineQueueStatus,
-          passwordInput, progressBar, usernameInput);
+      id = R.id.welcomeHeading;
+      TextView welcomeHeading = ViewBindings.findChildViewById(rootView, id);
+      if (welcomeHeading == null) {
+        break missingId;
+      }
+
+      id = R.id.welcomeTagline;
+      TextView welcomeTagline = ViewBindings.findChildViewById(rootView, id);
+      if (welcomeTagline == null) {
+        break missingId;
+      }
+
+      return new ActivityLoginBinding((LinearLayout) rootView, getStartedButton, loginButton,
+          logoImage, offlineQueueStatus, passwordInput, progressBar, usernameInput, welcomeHeading,
+          welcomeTagline);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

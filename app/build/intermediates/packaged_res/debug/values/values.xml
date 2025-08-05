@@ -12,10 +12,10 @@
     <color name="ic_launcher_background">@color/sensacare_primary</color>
     <color name="info">#3B82F6</color>
     <color name="overlay">#000000</color>
-    <color name="primary">#2563EB</color>
-    <color name="primary_dark">#1D4ED8</color>
-    <color name="primary_light">#DBEAFE</color>
-    <color name="primary_variant">#1E40AF</color>
+    <color name="primary">#313B67</color>
+    <color name="primary_dark">#262D4F</color>
+    <color name="primary_light">#5A6690</color>
+    <color name="primary_variant">#424D77</color>
     <color name="scrim">#000000</color>
     <color name="sensacare_primary">#313B67</color>
     <color name="success">#10B981</color>

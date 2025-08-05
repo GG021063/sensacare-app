@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors -->
-    <color name="primary">#2563EB</color>
-    <color name="primary_dark">#1D4ED8</color>
-    <color name="primary_light">#DBEAFE</color>
-    <color name="primary_variant">#1E40AF</color>
+    <!-- Primary Colors (Sensacare Brand) -->
+    <!-- Core brand colour -->
+    <color name="primary">#313B67</color>
+    <!-- Slightly darker shade for status / selected states -->
+    <color name="primary_dark">#262D4F</color>
+    <!-- Lighter tint for pressed / ripple effects -->
+    <color name="primary_light">#5A6690</color>
+    <!-- Variant (used by Material theming) -->
+    <color name="primary_variant">#424D77</color>
     
     <!-- Secondary Colors -->
     <color name="accent">#10B981</color>

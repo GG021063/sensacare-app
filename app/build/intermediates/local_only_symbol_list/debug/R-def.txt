@@ -111,6 +111,7 @@ id exportButton
 id exportLogsButton
 id fabQuickAction
 id fragment_container
+id getStartedButton
 id heartRateCard
 id heartRateChart
 id heartRateTrend
@@ -121,6 +122,7 @@ id loadingIndicator
 id logCountText
 id logRecyclerView
 id loginButton
+id logoImage
 id navigation_dashboard
 id navigation_devices
 id navigation_settings
@@ -171,6 +173,8 @@ id tv_signal_strength
 id usernameInput
 id vitalsRecyclerView
 id vitalsStatusText
+id welcomeHeading
+id welcomeTagline
 layout activity_login
 layout activity_main
 layout activity_onboarding
