@@ -175,37 +175,37 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\graha\.gradle\cach
 	android:dataExtractionRules
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:28:9-65
 activity#com.sensacare.veepoo.LoginActivity
-ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:37:9-45:20
+ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:37:9-41:20
 	android:exported
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:39:13-36
 	android:theme
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:40:13-81
 	android:name
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:38:13-42
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:41:13-44:29
-action#android.intent.action.MAIN
-ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:42:17-69
-	android:name
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:42:25-66
-category#android.intent.category.LAUNCHER
-ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:17-77
-	android:name
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:27-74
 activity#com.sensacare.veepoo.OnboardingActivity
-ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:47:9-51:20
+ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:43:9-51:20
 	android:exported
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:13-37
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:45:13-36
 	android:theme
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:50:13-69
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:46:13-81
 	android:name
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:13-47
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:44:13-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:47:13-50:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:17-69
+	android:name
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:48:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:17-77
+	android:name
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:49:27-74
 activity#com.sensacare.veepoo.MainActivity
 ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:53:9-57:20
 	android:exported
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:55:13-37
 	android:theme
-		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:56:13-69
+		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:56:13-81
 	android:name
 		ADDED from C:\Users\graha\sensacare-app\app\src\main\AndroidManifest.xml:54:13-41
 service#com.sensacare.veepoo.BleForegroundService
