@@ -3189,6 +3189,7 @@ drawable recycler_background
 drawable rpm_alert_background
 drawable rpm_status_background
 drawable secondary_button_background
+drawable sensacare_logo
 drawable spinner_background
 drawable stats_background
 drawable test_level_drawable
@@ -4003,6 +4004,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 menu bottom_navigation_menu
+mipmap ic_launcher
 plurals mtrl_badge_content_description
 string abc_action_bar_home_description
 string abc_action_bar_up_description

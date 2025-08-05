@@ -72,6 +72,7 @@ drawable recycler_background
 drawable rpm_alert_background
 drawable rpm_status_background
 drawable secondary_button_background
+drawable sensacare_logo
 drawable spinner_background
 drawable stats_background
 drawable timeline_background
@@ -185,6 +186,7 @@ layout fragment_diagnostic
 layout fragment_vitals_timeline
 layout item_ble_device
 menu bottom_navigation_menu
+mipmap ic_launcher
 style TextAppearance.Sensacare.Body1
 style TextAppearance.Sensacare.Body2
 style TextAppearance.Sensacare.Caption

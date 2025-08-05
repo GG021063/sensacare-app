@@ -42,9 +42,9 @@
         android:debuggable="true"
         android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher_sensacare"
+        android:icon="@mipmap/ic_launcher"
         android:label="Sensacare App"
-        android:roundIcon="@drawable/ic_launcher_sensacare"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" >
         <activity
