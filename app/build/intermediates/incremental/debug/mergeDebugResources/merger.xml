@@ -11558,6 +11558,18 @@
         <item name="boxCornerRadiusBottomEnd">12dp</item>
         <item name="boxStrokeColor">@color/primary</item>
         <item name="hintTextColor">@color/primary</item>
+        
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        
+        <item name="editTextStyle">@style/Widget.Sensacare.EditText</item>
+    </style><style name="Widget.Sensacare.EditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        
+        <item name="android:textColor">@color/text_primary</item>
+        
+        <item name="android:textColorHint">@color/text_secondary</item>
+        
+        <item name="android:background">@android:color/transparent</item>
     </style></file><file name="backup_rules" path="C:\Users\graha\sensacare-app\app\src\main\res\xml\backup_rules.xml" qualifiers="" type="xml"/><file name="data_extraction_rules" path="C:\Users\graha\sensacare-app\app\src\main\res\xml\data_extraction_rules.xml" qualifiers="" type="xml"/></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\graha\sensacare-app\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="debug" generated-set="debug$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\graha\sensacare-app\app\src\debug\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\graha\sensacare-app\app\build\generated\res\resValues\debug"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\graha\sensacare-app\app\build\generated\res\resValues\debug"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="AlertDialog">
         <attr name="android:layout"/>
         <attr format="reference" name="buttonPanelSideLayout"/>

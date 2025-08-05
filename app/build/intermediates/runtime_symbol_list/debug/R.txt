@@ -5299,8 +5299,9 @@ int style Widget_Sensacare_Button_Primary 0x7f110461
 int style Widget_Sensacare_Button_Secondary 0x7f110462
 int style Widget_Sensacare_Card 0x7f110463
 int style Widget_Sensacare_Card_Elevated 0x7f110464
-int style Widget_Sensacare_TextInputLayout 0x7f110465
-int style Widget_Support_CoordinatorLayout 0x7f110466
+int style Widget_Sensacare_EditText 0x7f110465
+int style Widget_Sensacare_TextInputLayout 0x7f110466
+int style Widget_Support_CoordinatorLayout 0x7f110467
 int[] styleable ActionBar { 0x7f03004c, 0x7f030053, 0x7f030054, 0x7f030140, 0x7f030141, 0x7f030142, 0x7f030143, 0x7f030144, 0x7f030145, 0x7f03016e, 0x7f030185, 0x7f030186, 0x7f0301a6, 0x7f030221, 0x7f030229, 0x7f03022f, 0x7f030230, 0x7f030234, 0x7f030245, 0x7f03025b, 0x7f0302d9, 0x7f03035e, 0x7f030397, 0x7f03039f, 0x7f0303a0, 0x7f03041f, 0x7f030423, 0x7f0304a9, 0x7f0304b7 }
 int styleable ActionBar_background 0
 int styleable ActionBar_backgroundSplit 1

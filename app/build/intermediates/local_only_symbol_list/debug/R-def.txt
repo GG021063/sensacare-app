@@ -197,6 +197,7 @@ style Widget.Sensacare.Button.Primary
 style Widget.Sensacare.Button.Secondary
 style Widget.Sensacare.Card
 style Widget.Sensacare.Card.Elevated
+style Widget.Sensacare.EditText
 style Widget.Sensacare.TextInputLayout
 xml backup_rules
 xml data_extraction_rules

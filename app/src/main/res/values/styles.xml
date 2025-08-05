@@ -78,5 +78,20 @@
         <item name="boxCornerRadiusBottomEnd">12dp</item>
         <item name="boxStrokeColor">@color/primary</item>
         <item name="hintTextColor">@color/primary</item>
+        <!-- Ensure consistent white background & visible hints -->
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <!-- Use custom EditText style so entered text is always visible -->
+        <item name="editTextStyle">@style/Widget.Sensacare.EditText</item>
+    </style>
+
+    <!-- EditText inside TextInputLayout -->
+    <style name="Widget.Sensacare.EditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <!-- Visible input text -->
+        <item name="android:textColor">@color/text_primary</item>
+        <!-- Visible hint inside field when box is collapsed -->
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <!-- Remove default underline / coloured background -->
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources> 
