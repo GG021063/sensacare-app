@@ -76,7 +76,7 @@ class RPMIntegrationManagerTest {
             spo2 = 98,
             bloodPressureSystolic = 120,
             bloodPressureDiastolic = 80,
-            temperature = 36.8
+            temperature = 36.8f
         )
 
         // When
@@ -88,16 +88,22 @@ class RPMIntegrationManagerTest {
     }
 
     @Test
-    fun `test vitals data processing with null data`() = runTest {
+    fun `test vitals data processing with invalid data`() = runTest {
         // Given
-        val vitalsData: VitalsData? = null
+        val vitalsData = VitalsData(
+            heartRate = 0, // Invalid heart rate
+            spo2 = 98,
+            bloodPressureSystolic = 120,
+            bloodPressureDiastolic = 80,
+            temperature = 36.8f
+        )
 
         // When
         val result = rpmIntegrationManager.processVitalsData(vitalsData)
 
         // Then
-        assertFalse("Vitals data processing should fail with null data", result)
-        assertEquals(VitalsStatus.NO_DATA, rpmIntegrationManager.currentVitalsStatus.value)
+        assertFalse("Vitals data processing should fail with invalid data", result)
+        assertEquals(VitalsStatus.CRITICAL_ERROR, rpmIntegrationManager.currentVitalsStatus.value)
     }
 
     @Test
@@ -188,7 +194,7 @@ class RPMIntegrationManagerTest {
 
         // Then
         assertNotNull("Queue stats should not be null", stats)
-        assertTrue("Queue size should be non-negative", stats?.queueSize ?: 0 >= 0)
+        assertTrue("Queue size should be non-negative", stats?.totalItems ?: 0 >= 0)
     }
 
     @Test

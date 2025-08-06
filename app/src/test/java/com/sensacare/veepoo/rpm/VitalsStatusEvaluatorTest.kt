@@ -19,7 +19,7 @@ class VitalsStatusEvaluatorTest {
             spo2 = 98,
             bloodPressureSystolic = 120,
             bloodPressureDiastolic = 80,
-            temperature = 36.8
+            temperature = 36.8f
         )
         val lastDataTimestamp = System.currentTimeMillis()
         val isConnected = true
@@ -53,7 +53,7 @@ class VitalsStatusEvaluatorTest {
             spo2 = 98,
             bloodPressureSystolic = 120,
             bloodPressureDiastolic = 80,
-            temperature = 36.8
+            temperature = 36.8f
         )
         val lastDataTimestamp = System.currentTimeMillis() - (2 * 60 * 60 * 1000) // 2 hours ago
         val isConnected = true
@@ -73,7 +73,7 @@ class VitalsStatusEvaluatorTest {
             spo2 = 98,
             bloodPressureSystolic = 120,
             bloodPressureDiastolic = 80,
-            temperature = 36.8
+            temperature = 36.8f
         )
         val lastDataTimestamp = System.currentTimeMillis()
         val isConnected = true
@@ -93,7 +93,7 @@ class VitalsStatusEvaluatorTest {
             spo2 = 98,
             bloodPressureSystolic = 120,
             bloodPressureDiastolic = 80,
-            temperature = 36.8
+            temperature = 36.8f
         )
         val lastDataTimestamp = System.currentTimeMillis()
         val isConnected = false

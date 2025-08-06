@@ -133,16 +133,17 @@ class ConsentManagerTest {
             timestamp = "2024-01-01T12:00:00Z",
             clientId = "test_client_123",
             device = DeviceMetadata(
-                macAddress = "AA:BB:CC:DD:EE:FF",
-                firmwareVersion = "1.0.0",
-                batteryLevel = 85
+                type = "veepoo_ring",
+                mac = "AA:BB:CC:DD:EE:FF",
+                firmware = "1.0.0",
+                battery = 85
             ),
             vitals = VitalsData(
                 heartRate = 75,
                 spo2 = 98,
                 bloodPressureSystolic = 120,
                 bloodPressureDiastolic = 80,
-                temperature = 36.8
+                temperature = 36.8f
             ),
             confidence = 0.95,
             consentToken = "original_token"
@@ -180,7 +181,8 @@ class ConsentManagerTest {
             carerName = "Test Carer",
             consentType = ConsentType.DIGITAL_SIGNATURE,
             consentToken = "token_456",
-            timestamp = System.currentTimeMillis()
+            timestamp = System.currentTimeMillis(),
+            version = "1.0"
         )
 
         // When
