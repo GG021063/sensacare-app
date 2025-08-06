@@ -149,6 +149,7 @@ id rpmAlertsContainer
 id rpmSetupButton
 id rpmStatusText
 id serviceStatusText
+id signUpButton
 id skipButton
 id skipConsentButton
 id spo2Card

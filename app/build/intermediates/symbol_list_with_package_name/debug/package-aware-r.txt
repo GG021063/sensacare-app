@@ -3681,6 +3681,7 @@ id shortcut
 id showCustom
 id showHome
 id showTitle
+id signUpButton
 id sin
 id skipButton
 id skipCollapsed

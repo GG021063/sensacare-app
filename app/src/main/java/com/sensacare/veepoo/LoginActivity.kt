@@ -42,6 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         setupLoginButton()
         setupGetStartedButton()
+        setupSignUpButton()
     }
 
     private fun setupLoginButton() {
@@ -64,9 +65,28 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Initialise the sign-up button click listener
+     * Creates a new Supabase user using the same email / password inputs
+     */
+    private fun setupSignUpButton() {
+        binding.signUpButton.setOnClickListener {
+            val username = binding.usernameInput.text.toString()
+            val password = binding.passwordInput.text.toString()
+
+            if (username.isBlank() || password.isBlank()) {
+                Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            performSignUp(username, password)
+        }
+    }
+
     private fun performLogin(username: String, password: String) {
         binding.progressBar.visibility = View.VISIBLE
         binding.loginButton.isEnabled = false
+        binding.signUpButton.isEnabled = false
 
         lifecycleScope.launch {
             try {
@@ -90,6 +110,7 @@ class LoginActivity : AppCompatActivity() {
                         ).show()
                         binding.progressBar.visibility = View.GONE
                         binding.loginButton.isEnabled = true
+                        binding.signUpButton.isEnabled = true
                     }
                 )
             } catch (e: Exception) {
@@ -100,6 +121,55 @@ class LoginActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
                 binding.progressBar.visibility = View.GONE
+                binding.loginButton.isEnabled = true
+                binding.signUpButton.isEnabled = true
+            }
+        }
+    }
+
+    /**
+     * Perform a Supabase sign-up and immediately log the user in
+     */
+    private fun performSignUp(username: String, password: String) {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.signUpButton.isEnabled = false
+        binding.loginButton.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val result = supabaseManager.signUp(username, password)
+                result.fold(
+                    onSuccess = { userInfo: UserInfo ->
+                        Log.d(TAG, "Sign-up successful for user: ${userInfo.email}")
+                        Toast.makeText(this@LoginActivity, "Account created", Toast.LENGTH_SHORT).show()
+                        // After sign-up, continue same flow as login
+                        if (hasCompletedOnboarding()) {
+                            proceedToMainActivity()
+                        } else {
+                            goToOnboarding()
+                        }
+                    },
+                    onFailure = { exception ->
+                        Log.e(TAG, "Sign-up failed", exception)
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Sign-up failed: ${exception.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        binding.progressBar.visibility = View.GONE
+                        binding.signUpButton.isEnabled = true
+                        binding.loginButton.isEnabled = true
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Sign-up error", e)
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Sign-up error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.progressBar.visibility = View.GONE
+                binding.signUpButton.isEnabled = true
                 binding.loginButton.isEnabled = true
             }
         }

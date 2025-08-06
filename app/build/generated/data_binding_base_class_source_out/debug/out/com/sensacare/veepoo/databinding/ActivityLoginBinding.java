@@ -42,6 +42,9 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final ProgressBar progressBar;
 
   @NonNull
+  public final MaterialButton signUpButton;
+
+  @NonNull
   public final TextInputEditText usernameInput;
 
   @NonNull
@@ -54,8 +57,8 @@ public final class ActivityLoginBinding implements ViewBinding {
       @NonNull MaterialButton getStartedButton, @NonNull MaterialButton loginButton,
       @NonNull ImageView logoImage, @NonNull TextView offlineQueueStatus,
       @NonNull TextInputEditText passwordInput, @NonNull ProgressBar progressBar,
-      @NonNull TextInputEditText usernameInput, @NonNull TextView welcomeHeading,
-      @NonNull TextView welcomeTagline) {
+      @NonNull MaterialButton signUpButton, @NonNull TextInputEditText usernameInput,
+      @NonNull TextView welcomeHeading, @NonNull TextView welcomeTagline) {
     this.rootView = rootView;
     this.getStartedButton = getStartedButton;
     this.loginButton = loginButton;
@@ -63,6 +66,7 @@ public final class ActivityLoginBinding implements ViewBinding {
     this.offlineQueueStatus = offlineQueueStatus;
     this.passwordInput = passwordInput;
     this.progressBar = progressBar;
+    this.signUpButton = signUpButton;
     this.usernameInput = usernameInput;
     this.welcomeHeading = welcomeHeading;
     this.welcomeTagline = welcomeTagline;
@@ -131,6 +135,12 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.signUpButton;
+      MaterialButton signUpButton = ViewBindings.findChildViewById(rootView, id);
+      if (signUpButton == null) {
+        break missingId;
+      }
+
       id = R.id.usernameInput;
       TextInputEditText usernameInput = ViewBindings.findChildViewById(rootView, id);
       if (usernameInput == null) {
@@ -150,8 +160,8 @@ public final class ActivityLoginBinding implements ViewBinding {
       }
 
       return new ActivityLoginBinding((LinearLayout) rootView, getStartedButton, loginButton,
-          logoImage, offlineQueueStatus, passwordInput, progressBar, usernameInput, welcomeHeading,
-          welcomeTagline);
+          logoImage, offlineQueueStatus, passwordInput, progressBar, signUpButton, usernameInput,
+          welcomeHeading, welcomeTagline);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

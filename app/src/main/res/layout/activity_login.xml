@@ -86,6 +86,17 @@
         android:padding="16dp"
         style="@style/Widget.Sensacare.Button.Primary" />
 
+    <!-- Sign Up Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Create Account"
+        android:textSize="14sp"
+        android:padding="12dp"
+        style="?attr/materialButtonOutlinedStyle" />
+
     <!-- Get Started / Onboarding Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/getStartedButton"
