@@ -37,10 +37,39 @@
         android:textSize="14sp"
         android:textColor="@color/text_secondary"
         android:gravity="center"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="24dp" />
 
-    <!-- Username Input -->
+    <!-- Authentication Mode Toggle -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/authModeToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:singleSelection="true"
+        app:selectionRequired="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/passwordModeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textSize="12sp"
+            style="?attr/materialButtonOutlinedStyle"
+            android:checked="true" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/otpModeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Magic Link"
+            android:textSize="12sp"
+            style="?attr/materialButtonOutlinedStyle" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <!-- Email Input (common to both modes) -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -58,56 +87,137 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Password Input -->
-    <com.google.android.material.textfield.TextInputLayout
+    <!-- Password Mode Container -->
+    <LinearLayout
+        android:id="@+id/passwordModeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        style="@style/Widget.Sensacare.TextInputLayout"
-        app:passwordToggleEnabled="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordInput"
+        <!-- Password Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            style="@style/Widget.Sensacare.EditText"
-            android:maxLines="1" />
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Sensacare.TextInputLayout"
+            app:passwordToggleEnabled="true">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                style="@style/Widget.Sensacare.EditText"
+                android:maxLines="1" />
 
-    <!-- Login Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginButton"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Login Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:textSize="16sp"
+            android:padding="16dp"
+            style="@style/Widget.Sensacare.Button.Primary" />
+
+    </LinearLayout>
+
+    <!-- OTP Mode Container -->
+    <LinearLayout
+        android:id="@+id/otpModeContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="16sp"
-        android:padding="16dp"
-        style="@style/Widget.Sensacare.Button.Primary" />
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <!-- Sign Up Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signUpButton"
+        <!-- OTP Input (initially hidden) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/otpInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Sensacare.TextInputLayout"
+            android:visibility="gone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otpInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter 6-digit code from email"
+                android:inputType="number"
+                android:maxLength="6"
+                style="@style/Widget.Sensacare.EditText"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- OTP Instructions -->
+        <TextView
+            android:id="@+id/otpInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="We'll send a magic link to your email. No password needed!"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Send Magic Link Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendMagicLinkButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Magic Link"
+            android:textSize="16sp"
+            android:padding="16dp"
+            style="@style/Widget.Sensacare.Button.Primary" />
+
+        <!-- Verify OTP Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/verifyOtpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify Code"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:visibility="gone"
+            style="@style/Widget.Sensacare.Button.Primary" />
+
+    </LinearLayout>
+
+    <!-- Common buttons for both modes -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Create Account"
-        android:textSize="14sp"
-        android:padding="12dp"
-        style="?attr/materialButtonOutlinedStyle" />
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
 
-    <!-- Get Started / Onboarding Button -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/getStartedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="New User? Get Started"
-        android:textSize="14sp"
-        android:padding="12dp"
-        style="?attr/materialButtonOutlinedStyle" />
+        <!-- Sign Up Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signUpButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:textSize="14sp"
+            android:padding="12dp"
+            style="?attr/materialButtonOutlinedStyle" />
+
+        <!-- Get Started / Onboarding Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/getStartedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="New User? Get Started"
+            android:textSize="14sp"
+            android:padding="12dp"
+            style="?attr/materialButtonOutlinedStyle" />
+
+    </LinearLayout>
 
     <!-- Progress Bar -->
     <ProgressBar
@@ -128,4 +238,4 @@
         android:textColor="@color/text_secondary"
         android:visibility="gone" />
 
-</LinearLayout> 
+</LinearLayout>

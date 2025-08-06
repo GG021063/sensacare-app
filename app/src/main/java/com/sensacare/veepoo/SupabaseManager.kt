@@ -146,12 +146,12 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
                 // Process sync queue when network becomes available
                 processSyncQueue()
             }
-            
+
             override fun onLost(network: Network) {
                 Log.d(TAG, "Network lost")
                 isNetworkAvailable.set(false)
             }
-            
+
             override fun onCapabilitiesChanged(network: Network, capabilities: NetworkCapabilities) {
                 val hasInternet = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                 val hasValidated = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
@@ -169,6 +169,17 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
         val activeNetwork = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
         isNetworkAvailable.set(capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true)
+    }
+
+    /**
+     * Verify OTP code from email
+     * NOTE: Temporarily disabled due to OtpType enum compatibility issues
+     */
+    suspend fun verifyOtp(email: String, token: String): Result<UserInfo> {
+        // TODO: Fix OtpType enum issue - different Supabase versions have different enum values
+        return Result.failure(
+            Exception("OTP verification temporarily disabled – incompatible OtpType enum in current supabase-kt version")
+        )
     }
     
     /**
@@ -214,8 +225,8 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             /*
              * IMPORTANT:
              * ------------------------------------------------------------
-             * Creating the user_profile record here causes a “Database error
-             * saving new user” because RLS policies on `user_profiles`
+             * Creating the user_profile record here causes a "Database error
+             * saving new user" because RLS policies on `user_profiles`
              * require the auth.user row to exist AND a valid JWT that
              * already belongs to that user.
              *
@@ -232,6 +243,21 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             Result.success(user)
         } catch (e: Exception) {
             Log.e(TAG, "Sign up failed", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Send OTP (Magic Link) to email for passwordless authentication
+     */
+    suspend fun signInWithOtp(email: String): Result<Unit> {
+        return try {
+            supabase.auth.signInWith(Email) {
+                this.email = email
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Send OTP failed", e)
             Result.failure(e)
         }
     }

@@ -3289,6 +3289,7 @@ id anticipate
 id arc
 id asConfigured
 id async
+id authModeToggle
 id auto
 id autoComplete
 id autoCompleteToEnd
@@ -3411,6 +3412,7 @@ id edge
 id edit_query
 id edit_text_id
 id elastic
+id emailInputLayout
 id embed
 id emptyStateText
 id end
@@ -3602,6 +3604,11 @@ id open_search_view_search_prefix
 id open_search_view_status_bar_spacer
 id open_search_view_toolbar
 id open_search_view_toolbar_container
+id otpInput
+id otpInputLayout
+id otpInstructions
+id otpModeButton
+id otpModeContainer
 id outline
 id outward
 id overallAlertContainer
@@ -3616,6 +3623,9 @@ id parentPanel
 id parentRelative
 id parent_matrix
 id passwordInput
+id passwordInputLayout
+id passwordModeButton
+id passwordModeContainer
 id password_toggle
 id path
 id pathRelative
@@ -3674,6 +3684,7 @@ id search_voice_btn
 id select_dialog_listview
 id selected
 id selection_type
+id sendMagicLinkButton
 id serviceStatusText
 id sharedValueSet
 id sharedValueUnset
@@ -3790,6 +3801,7 @@ id unlabeled
 id up
 id useLogo
 id usernameInput
+id verifyOtpButton
 id vertical_only
 id view_offset_helper
 id view_transition

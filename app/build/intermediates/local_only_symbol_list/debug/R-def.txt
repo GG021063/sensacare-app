@@ -79,6 +79,7 @@ drawable timeline_background
 id adminButton
 id alertLevelSpinner
 id alertsRecyclerView
+id authModeToggle
 id backButton
 id bloodPressureCard
 id bloodPressureChart
@@ -105,6 +106,7 @@ id debugModeSwitch
 id debugModeText
 id deviceRecyclerView
 id diagnosticButton
+id emailInputLayout
 id emptyStateText
 id eventTypeSpinner
 id eventsRecyclerView
@@ -131,11 +133,19 @@ id navigation_timeline
 id nextButton
 id nextPageButton
 id offlineQueueStatus
+id otpInput
+id otpInputLayout
+id otpInstructions
+id otpModeButton
+id otpModeContainer
 id overallAlertContainer
 id overallAlertIcon
 id overallAlertText
 id pageInfoText
 id passwordInput
+id passwordInputLayout
+id passwordModeButton
+id passwordModeContainer
 id prevPageButton
 id progressBar
 id progressContainer
@@ -148,6 +158,7 @@ id rpmAlertText
 id rpmAlertsContainer
 id rpmSetupButton
 id rpmStatusText
+id sendMagicLinkButton
 id serviceStatusText
 id signUpButton
 id skipButton
@@ -173,6 +184,7 @@ id tv_device_name
 id tv_rssi
 id tv_signal_strength
 id usernameInput
+id verifyOtpButton
 id vitalsRecyclerView
 id vitalsStatusText
 id welcomeHeading
