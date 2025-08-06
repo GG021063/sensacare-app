@@ -4,262 +4,201 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp"
-    android:background="@color/white">
+    android:padding="24dp"
+    android:background="@color/background"
+    android:gravity="center">
 
-    <!-- Sensacare logo -->
+    <!-- Sensacare Logo -->
     <ImageView
-        android:id="@+id/logoImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/sensacare_logo"
-        android:contentDescription="Sensacare App"
-        android:layout_marginBottom="24dp" />
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Sensacare Logo" />
 
-    <!-- Heading -->
+    <!-- Welcome Message -->
     <TextView
-        android:id="@+id/welcomeHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome to Sensacare"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="@color/primary"
+        android:textColor="@color/text_primary"
         android:layout_marginBottom="8dp" />
 
-    <!-- Tagline -->
     <TextView
-        android:id="@+id/welcomeTagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connect your device and monitor your vitals effortlessly"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="@color/text_secondary"
         android:gravity="center"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="48dp" />
 
-    <!-- Authentication Mode Toggle -->
+    <!-- Email Input Section -->
     <LinearLayout
-        android:id="@+id/authModeToggle"
+        android:id="@+id/emailSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
 
-        <!-- Password mode tab -->
         <TextView
-            android:id="@+id/passwordModeButton"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="2dp"
-            android:background="@color/primary"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="PASSWORD"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="11sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter your email address"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="8dp" />
 
-        <!-- Magic-Link mode tab -->
-        <TextView
-            android:id="@+id/otpModeButton"
-            android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_weight="1"
-            android:layout_marginStart="2dp"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="OTP"
-            android:textAllCaps="true"
-            android:textColor="@color/primary"
-            android:textSize="11sp" />
-
-    </LinearLayout>
-
-    <!-- Email Input (common to both modes) -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        style="@style/Widget.Sensacare.TextInputLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/usernameInput"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:autofillHints="emailAddress"
-            style="@style/Widget.Sensacare.EditText"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Password Mode Container -->
-    <LinearLayout
-        android:id="@+id/passwordModeContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!-- Password Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            style="@style/Widget.Sensacare.TextInputLayout"
-            app:passwordToggleEnabled="true">
+            app:boxBackgroundColor="@color/surface"
+            app:boxStrokeColor="@color/primary"
+            app:hintTextColor="@color/primary">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordInput"
+                android:id="@+id/emailInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:inputType="textPassword"
-                style="@style/Widget.Sensacare.EditText"
-                android:maxLines="1" />
+                android:inputType="textEmailAddress"
+                android:hint="Enter your email"
+                android:textColor="@color/text_primary" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Login Button -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/loginButton"
+            android:id="@+id/getCodeButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"
+            android:layout_height="56dp"
+            android:layout_marginTop="16dp"
+            android:text="GET CODE"
             android:textSize="16sp"
-            android:padding="16dp"
-            style="@style/Widget.Sensacare.Button.Primary" />
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="8dp" />
 
     </LinearLayout>
 
-    <!-- OTP Mode Container -->
+    <!-- OTP Section (Initially Hidden) -->
     <LinearLayout
-        android:id="@+id/otpModeContainer"
+        android:id="@+id/otpSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <!-- OTP Input (initially hidden) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otpInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            style="@style/Widget.Sensacare.TextInputLayout"
-            android:visibility="gone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/otpInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter 6-digit code from email"
-                android:inputType="number"
-                android:maxLength="6"
-                style="@style/Widget.Sensacare.EditText"
-                android:maxLines="1" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- OTP Instructions -->
         <TextView
-            android:id="@+id/otpInstructions"
-            android:layout_width="match_parent"
+            android:id="@+id/otpMessage"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="We'll send a 6-digit code to your email. No password needed!"
-            android:textSize="14sp"
+            android:text="Code sent to admin@sensacare.com"
+            android:textSize="16sp"
             android:textColor="@color/text_secondary"
             android:gravity="center"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
-        <!-- Send Magic Link Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sendMagicLinkButton"
+        <!-- OTP Input Boxes -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Send OTP Code"
-            android:textSize="16sp"
-            android:padding="16dp"
-            style="@style/Widget.Sensacare.Button.Primary" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
 
-        <!-- Verify OTP Button -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp1"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp2"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp3"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp4"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp5"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/otp6"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:background="@drawable/edit_text_background"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/verifyOtpButton"
+            android:id="@+id/verifyCodeButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Verify Code"
+            android:layout_height="56dp"
+            android:text="VERIFY CODE"
             android:textSize="16sp"
-            android:padding="16dp"
-            android:visibility="gone"
-            style="@style/Widget.Sensacare.Button.Primary" />
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/primary"
+            app:cornerRadius="8dp" />
 
     </LinearLayout>
-
-    <!-- Common buttons for both modes -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp">
-
-        <!-- Sign Up Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/signUpButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create Account"
-            android:textSize="14sp"
-            android:padding="12dp"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <!-- Get Started / Onboarding Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/getStartedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="New User? Get Started"
-            android:textSize="14sp"
-            android:padding="12dp"
-            style="?attr/materialButtonOutlinedStyle" />
-
-        <!-- Demo Login Button (for testing) -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/demoLoginButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Demo Login (admin@sensacare.com)"
-            android:textSize="14sp"
-            android:padding="12dp"
-            style="?attr/materialButtonOutlinedStyle" />
-
-    </LinearLayout>
-
-    <!-- Progress Bar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
-
-    <!-- Offline Queue Status -->
-    <TextView
-        android:id="@+id/offlineQueueStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Offline queue: 0 items"
-        android:textSize="12sp"
-        android:textColor="@color/text_secondary"
-        android:visibility="gone" />
 
 </LinearLayout>

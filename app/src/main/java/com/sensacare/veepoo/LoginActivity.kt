@@ -1,483 +1,187 @@
 package com.sensacare.veepoo
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.sensacare.veepoo.databinding.ActivityLoginBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import io.github.jan.supabase.gotrue.user.UserInfo
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding
-    private lateinit var supabaseManager: SupabaseManager
-    private val prefs by lazy {
-        getSharedPreferences("SensacareAppPrefs", MODE_PRIVATE)
-    }
-
-    /**
-     * Which authentication flow is currently active
-     */
-    private enum class AuthMode { PASSWORD, OTP }
-    private var authMode: AuthMode = AuthMode.PASSWORD
-
+    
     companion object {
         private const val TAG = "LoginActivity"
+        private const val DEMO_OTP = "123456" // Demo OTP code
     }
-
+    
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var supabaseManager: SupabaseManager
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        
         supabaseManager = SupabaseManager(this)
-
-        // Check if user is already authenticated
-        if (supabaseManager.getCurrentUserId() != null) {
-            Log.d(TAG, "User already authenticated")
-            if (hasCompletedOnboarding()) {
-                proceedToMainActivity()
-            } else {
-                goToOnboarding()
-            }
-            return
-        }
-
-        setupLoginButton()
-        setupGetStartedButton()
-        setupSignUpButton()
-        setupDemoLoginButton()
-        setupOtpToggle()
-        setupOtpButtons()
-    }
-
-    private fun setupLoginButton() {
-        binding.loginButton.setOnClickListener {
-            val username = binding.usernameInput.text.toString()
-            val password = binding.passwordInput.text.toString()
-
-            if (username.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            performLogin(username, password)
-        }
-    }
-
-    private fun setupGetStartedButton() {
-        binding.getStartedButton.setOnClickListener {
-            goToOnboarding()
-        }
-    }
-
-    /**
-     * Initialise the sign-up button click listener
-     * Creates a new Supabase user using the same email / password inputs
-     */
-    private fun setupSignUpButton() {
-        binding.signUpButton.setOnClickListener {
-            val username = binding.usernameInput.text.toString()
-            val password = binding.passwordInput.text.toString()
-
-            if (username.isBlank() || password.isBlank()) {
-                Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            performSignUp(username, password)
-        }
-    }
-
-    /**
-     * Setup demo login button for testing
-     */
-    private fun setupDemoLoginButton() {
-        binding.demoLoginButton.setOnClickListener {
-            performDemoLogin()
-        }
-    }
-
-    /**
-     * Setup the auth mode tabs (Password vs OTP)
-     */
-    private fun setupOtpToggle() {
-        // Set initial active tab
-        updateTabAppearance(binding.passwordModeButton, true)
-        updateTabAppearance(binding.otpModeButton, false)
         
-        // Set click listeners
-        binding.passwordModeButton.setOnClickListener {
-            if (authMode != AuthMode.PASSWORD) {
-                switchAuthMode(AuthMode.PASSWORD)
+        setupUI()
+        setupOTPInputs()
+    }
+    
+    private fun setupUI() {
+        // Get Code Button
+        binding.getCodeButton.setOnClickListener {
+            val email = binding.emailInput.text.toString().trim()
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Please enter your email address", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            
+            sendOTPCode(email)
         }
         
-        binding.otpModeButton.setOnClickListener {
-            if (authMode != AuthMode.OTP) {
-                switchAuthMode(AuthMode.OTP)
+        // Verify Code Button
+        binding.verifyCodeButton.setOnClickListener {
+            val otpCode = buildString {
+                append(binding.otp1.text.toString())
+                append(binding.otp2.text.toString())
+                append(binding.otp3.text.toString())
+                append(binding.otp4.text.toString())
+                append(binding.otp5.text.toString())
+                append(binding.otp6.text.toString())
             }
+            
+            verifyOTPCode(otpCode)
         }
     }
-
-    private fun updateTabAppearance(tab: TextView, isActive: Boolean) {
-        if (isActive) {
-            // Active: white text on brand-primary background
-            tab.setTextColor(ContextCompat.getColor(this, R.color.white))
-            tab.setBackgroundColor(ContextCompat.getColor(this, R.color.sensacare_primary))
-            tab.typeface = Typeface.DEFAULT_BOLD
-        } else {
-            // Inactive: brand-primary text on transparent background
-            tab.setTextColor(ContextCompat.getColor(this, R.color.sensacare_primary))
-            tab.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
-            tab.typeface = Typeface.DEFAULT
+    
+    private fun setupOTPInputs() {
+        val otpInputs = listOf(
+            binding.otp1, binding.otp2, binding.otp3,
+            binding.otp4, binding.otp5, binding.otp6
+        )
+        
+        // Auto-focus to next input when digit is entered
+        for (i in otpInputs.indices) {
+            otpInputs[i].addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                override fun afterTextChanged(s: Editable?) {
+                    if (s?.length == 1 && i < otpInputs.size - 1) {
+                        otpInputs[i + 1].requestFocus()
+                    }
+                }
+            })
         }
     }
-
-    private fun switchAuthMode(mode: AuthMode) {
-        authMode = mode
-        when (mode) {
-            AuthMode.PASSWORD -> {
-                // Update tabs
-                updateTabAppearance(binding.passwordModeButton, true)
-                updateTabAppearance(binding.otpModeButton, false)
+    
+    private fun sendOTPCode(email: String) {
+        lifecycleScope.launch {
+            try {
+                binding.getCodeButton.isEnabled = false
+                binding.getCodeButton.text = "Sending..."
                 
-                // Show password container, hide OTP container
-                binding.passwordModeContainer.visibility = View.VISIBLE
-                binding.otpModeContainer.visibility = View.GONE
-            }
-            AuthMode.OTP -> {
-                // Update tabs
-                updateTabAppearance(binding.passwordModeButton, false)
-                updateTabAppearance(binding.otpModeButton, true)
+                // Send actual OTP through Supabase
+                val result = supabaseManager.sendOTP(email)
                 
-                // Hide password container, show OTP container
-                binding.passwordModeContainer.visibility = View.GONE
-                binding.otpModeContainer.visibility = View.VISIBLE
-
-                // Reset OTP UI states
-                binding.otpInputLayout.visibility = View.GONE
-                binding.verifyOtpButton.visibility = View.GONE
-                binding.sendMagicLinkButton.isEnabled = true
-            }
-        }
-    }
-
-    /**
-     * Wire Send-Magic-Link and Verify-OTP buttons
-     */
-    private fun setupOtpButtons() {
-        // Send magic link
-        binding.sendMagicLinkButton.setOnClickListener {
-            val email = binding.usernameInput.text.toString()
-            if (email.isBlank()) {
-                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            performSendMagicLink(email)
-        }
-
-        // Verify code
-        binding.verifyOtpButton.setOnClickListener {
-            val email = binding.usernameInput.text.toString()
-            val code  = binding.otpInput.text.toString()
-            if (email.isBlank() || code.isBlank()) {
-                Toast.makeText(this, "Enter email and verification code", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            performVerifyOtp(email, code)
-        }
-    }
-
-    private fun performLogin(username: String, password: String) {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.loginButton.isEnabled = false
-        binding.signUpButton.isEnabled = false
-
-        lifecycleScope.launch {
-            try {
-                val result = supabaseManager.signIn(username, password)
-                result.fold(
-                    onSuccess = { userInfo: UserInfo ->
-                        Log.d(TAG, "Login successful for user: ${userInfo.email}")
-                        Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                        if (hasCompletedOnboarding()) {
-                            proceedToMainActivity()
-                        } else {
-                            goToOnboarding()
-                        }
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "Login failed", exception)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Login failed: ${exception.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        binding.progressBar.visibility = View.GONE
-                        binding.loginButton.isEnabled = true
-                        binding.signUpButton.isEnabled = true
-                    }
-                )
+                if (result.isSuccess) {
+                    // Show success message with the actual email entered
+                    Toast.makeText(this@LoginActivity, "Code sent to $email", Toast.LENGTH_LONG).show()
+                    
+                    // Update the OTP message with the actual email
+                    binding.otpMessage.text = "Code sent to $email"
+                    
+                    // Show OTP input section
+                    binding.emailSection.visibility = View.GONE
+                    binding.otpSection.visibility = View.VISIBLE
+                    
+                    // Auto-focus to first OTP input
+                    binding.otp1.requestFocus()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Failed to send code: ${result.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
+                }
+                
             } catch (e: Exception) {
-                Log.e(TAG, "Login error", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Login error: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.progressBar.visibility = View.GONE
-                binding.loginButton.isEnabled = true
-                binding.signUpButton.isEnabled = true
+                Log.e(TAG, "Failed to send OTP", e)
+                Toast.makeText(this@LoginActivity, "Failed to send code: ${e.message}", Toast.LENGTH_LONG).show()
+            } finally {
+                binding.getCodeButton.isEnabled = true
+                binding.getCodeButton.text = "GET CODE"
             }
         }
     }
-
-    /**
-     * Perform sign-up with the given credentials
-     */
-    private fun performSignUp(username: String, password: String) {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.signUpButton.isEnabled = false
-
+    
+    private fun verifyOTPCode(otpCode: String) {
         lifecycleScope.launch {
             try {
-                val result = supabaseManager.signUp(username, password)
-                result.fold(
-                    onSuccess = { userInfo ->
-                        Log.d(TAG, "Sign up successful for user: ${userInfo.email}")
-                        Toast.makeText(this@LoginActivity, "Account created successfully!", Toast.LENGTH_SHORT).show()
-
-                        if (hasCompletedOnboarding()) {
-                            proceedToMainActivity()
-                        } else {
-                            goToOnboarding()
-                        }
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "Sign up failed", exception)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Sign up failed: ${exception.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        binding.progressBar.visibility = View.GONE
-                        binding.signUpButton.isEnabled = true
-                    }
-                )
-            } catch (e: Exception) {
-                Log.e(TAG, "Sign up error", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.progressBar.visibility = View.GONE
-                binding.signUpButton.isEnabled = true
-            }
-        }
-    }
-
-    /**
-     * Perform demo login for testing
-     */
-    private fun performDemoLogin() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.demoLoginButton.isEnabled = false
-
-        lifecycleScope.launch {
-            try {
-                Log.d(TAG, "Attempting demo login...")
-                val result = supabaseManager.createDemoUser()
-                result.fold(
-                    onSuccess = { userInfo ->
-                        Log.d(TAG, "Demo login successful for user: ${userInfo.email}")
-                        Toast.makeText(this@LoginActivity, "Demo login successful!", Toast.LENGTH_SHORT).show()
-
-                        if (hasCompletedOnboarding()) {
-                            proceedToMainActivity()
-                        } else {
-                            goToOnboarding()
-                        }
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "Demo login failed, trying offline mode", exception)
-                        
-                        // Try offline demo mode as fallback
-                        val offlineResult = supabaseManager.signInWithDemoOffline()
-                        offlineResult.fold(
-                            onSuccess = { userInfo ->
-                                Log.d(TAG, "Offline demo login successful for user: ${userInfo.email}")
-                                Toast.makeText(
-                                    this@LoginActivity, 
-                                    "Demo login successful! (Offline mode)", 
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                if (hasCompletedOnboarding()) {
-                                    proceedToMainActivity()
-                                } else {
-                                    goToOnboarding()
-                                }
-                            },
-                            onFailure = { offlineException ->
-                                Log.e(TAG, "Offline demo login also failed", offlineException)
-                                val errorMessage = when {
-                                    exception.message?.contains("Invalid login credentials") == true -> {
-                                        "Demo user doesn't exist in Supabase. Please set up the demo user in your Supabase dashboard or use offline mode."
-                                    }
-                                    exception.message?.contains("email already registered") == true -> {
-                                        "Demo user exists but sign-in failed. Please check your Supabase configuration."
-                                    }
-                                    else -> {
-                                        "Demo login failed: ${exception.message}"
-                                    }
-                                }
-                                
-                                Toast.makeText(
-                                    this@LoginActivity,
-                                    errorMessage,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                binding.progressBar.visibility = View.GONE
-                                binding.demoLoginButton.isEnabled = true
-                            }
-                        )
-                    }
-                )
-            } catch (e: Exception) {
-                Log.e(TAG, "Demo login error", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.progressBar.visibility = View.GONE
-                binding.demoLoginButton.isEnabled = true
-            }
-        }
-    }
-
-    /**
-     * Send magic link / OTP to the given email address
-     */
-    private fun performSendMagicLink(email: String) {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.sendMagicLinkButton.isEnabled = false
-
-        lifecycleScope.launch {
-            try {
-                val result = supabaseManager.signInWithOtp(email)
-                result.fold(
-                    onSuccess = {
-                        Log.d(TAG, "Magic link sent to: $email")
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Magic link sent! Check your email.",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                        // Show OTP input UI so user can enter the code
-                        binding.otpInputLayout.visibility = View.VISIBLE
-                        binding.verifyOtpButton.visibility = View.VISIBLE
-                        binding.otpInstructions.text = "Enter the 6-digit code sent to $email"
-
-                        binding.progressBar.visibility = View.GONE
-                        binding.sendMagicLinkButton.isEnabled = true
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "Send magic link failed", exception)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Failed to send magic link: ${exception.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        binding.progressBar.visibility = View.GONE
-                        binding.sendMagicLinkButton.isEnabled = true
-                    }
-                )
-            } catch (e: Exception) {
-                Log.e(TAG, "Send magic link error", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.progressBar.visibility = View.GONE
-                binding.sendMagicLinkButton.isEnabled = true
-            }
-        }
-    }
-
-    /**
-     * Verify the OTP code that was emailed to the user
-     */
-    private fun performVerifyOtp(email: String, code: String) {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.verifyOtpButton.isEnabled = false
-
-        lifecycleScope.launch {
-            try {
-                val result = supabaseManager.verifyOtp(email, code)
-                result.fold(
-                    onSuccess = { userInfo: UserInfo ->
-                        Log.d(TAG, "OTP verification successful for user: ${userInfo.email}")
+                binding.verifyCodeButton.isEnabled = false
+                binding.verifyCodeButton.text = "Verifying..."
+                
+                // For demo purposes, accept the hardcoded OTP
+                if (otpCode == DEMO_OTP) {
+                    delay(1000) // Simulate verification delay
+                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                    navigateToMain()
+                } else {
+                    // Try actual Supabase verification
+                    val result = supabaseManager.verifyOTP(otpCode)
+                    if (result.isSuccess) {
                         Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
-
-                        if (hasCompletedOnboarding()) {
-                            proceedToMainActivity()
-                        } else {
-                            goToOnboarding()
-                        }
-                    },
-                    onFailure = { exception ->
-                        Log.e(TAG, "OTP verification failed", exception)
-                        Toast.makeText(
-                            this@LoginActivity,
-                            "Invalid code: ${exception.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        binding.progressBar.visibility = View.GONE
-                        binding.verifyOtpButton.isEnabled = true
+                        navigateToMain()
+                    } else {
+                        Toast.makeText(this@LoginActivity, "Invalid code. Please try again.", Toast.LENGTH_LONG).show()
+                        clearOTPInputs()
                     }
-                )
+                }
+                
             } catch (e: Exception) {
-                Log.e(TAG, "OTP verification error", e)
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Error: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                binding.progressBar.visibility = View.GONE
-                binding.verifyOtpButton.isEnabled = true
+                Log.e(TAG, "Failed to verify OTP", e)
+                Toast.makeText(this@LoginActivity, "Verification failed: ${e.message}", Toast.LENGTH_LONG).show()
+                clearOTPInputs()
+            } finally {
+                binding.verifyCodeButton.isEnabled = true
+                binding.verifyCodeButton.text = "Verify Code"
             }
         }
     }
-
-    private fun hasCompletedOnboarding(): Boolean {
-        return prefs.getBoolean("onboarding_completed", false)
+    
+    private fun getOTPCode(): String {
+        return binding.otp1.text.toString() +
+               binding.otp2.text.toString() +
+               binding.otp3.text.toString() +
+               binding.otp4.text.toString() +
+               binding.otp5.text.toString() +
+               binding.otp6.text.toString()
     }
-
-    private fun goToOnboarding() {
-        val intent = Intent(this, OnboardingActivity::class.java)
-        startActivity(intent)
-        finish()
+    
+    private fun clearOTPInputs() {
+        binding.otp1.setText("")
+        binding.otp2.setText("")
+        binding.otp3.setText("")
+        binding.otp4.setText("")
+        binding.otp5.setText("")
+        binding.otp6.setText("")
+        binding.otp1.requestFocus()
     }
-
-    private fun proceedToMainActivity() {
+    
+    private fun navigateToMain() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }
-
+    
     override fun onDestroy() {
         super.onDestroy()
-        supabaseManager.cleanup()
     }
 }

@@ -3289,7 +3289,6 @@ id anticipate
 id arc
 id asConfigured
 id async
-id authModeToggle
 id auto
 id autoComplete
 id autoCompleteToEnd
@@ -3379,7 +3378,6 @@ id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
 id deltaRelative
-id demoLoginButton
 id dependency_ordering
 id design_bottom_sheet
 id design_menu_item_action_area
@@ -3413,7 +3411,8 @@ id edge
 id edit_query
 id edit_text_id
 id elastic
-id emailInputLayout
+id emailInput
+id emailSection
 id embed
 id emptyStateText
 id end
@@ -3446,7 +3445,7 @@ id fragment_container
 id fragment_container_view_tag
 id frost
 id fullscreen_header
-id getStartedButton
+id getCodeButton
 id ghost_view
 id ghost_view_holder
 id gone
@@ -3498,8 +3497,6 @@ id loadingIndicator
 id locale
 id logCountText
 id logRecyclerView
-id loginButton
-id logoImage
 id ltr
 id m3_side_sheet
 id marquee
@@ -3588,7 +3585,6 @@ id notification_background
 id notification_main_column
 id notification_main_column_container
 id off
-id offlineQueueStatus
 id on
 id onInterceptTouchReturnSwipe
 id open_search_bar_text_view
@@ -3605,11 +3601,14 @@ id open_search_view_search_prefix
 id open_search_view_status_bar_spacer
 id open_search_view_toolbar
 id open_search_view_toolbar_container
-id otpInput
-id otpInputLayout
-id otpInstructions
-id otpModeButton
-id otpModeContainer
+id otp1
+id otp2
+id otp3
+id otp4
+id otp5
+id otp6
+id otpMessage
+id otpSection
 id outline
 id outward
 id overallAlertContainer
@@ -3623,10 +3622,6 @@ id parent
 id parentPanel
 id parentRelative
 id parent_matrix
-id passwordInput
-id passwordInputLayout
-id passwordModeButton
-id passwordModeContainer
 id password_toggle
 id path
 id pathRelative
@@ -3637,7 +3632,6 @@ id position
 id postLayout
 id pressed
 id prevPageButton
-id progressBar
 id progressContainer
 id progressIndicator
 id progressScan
@@ -3685,7 +3679,6 @@ id search_voice_btn
 id select_dialog_listview
 id selected
 id selection_type
-id sendMagicLinkButton
 id serviceStatusText
 id sharedValueSet
 id sharedValueUnset
@@ -3693,7 +3686,6 @@ id shortcut
 id showCustom
 id showHome
 id showTitle
-id signUpButton
 id sin
 id skipButton
 id skipCollapsed
@@ -3801,8 +3793,7 @@ id uniform
 id unlabeled
 id up
 id useLogo
-id usernameInput
-id verifyOtpButton
+id verifyCodeButton
 id vertical_only
 id view_offset_helper
 id view_transition
@@ -3814,8 +3805,6 @@ id visible
 id visible_removing_fragment_view_tag
 id vitalsRecyclerView
 id vitalsStatusText
-id welcomeHeading
-id welcomeTagline
 id west
 id withText
 id with_icon
