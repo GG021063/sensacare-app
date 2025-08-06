@@ -172,15 +172,42 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
 
     /**
-     * Verify OTP code from email
-     * NOTE: Temporarily disabled due to OTP API compatibility issues with supabase-kt 2.0.4
+     * Verify OTP code from email (fallback approach)
+     *
+     * Supabase-kt 2.0.x does not expose the “verifyOtp” helper that newer
+     * versions contain.  As a pragmatic workaround we treat the token as a
+     * temporary password set by the backend’s **Password Reset** e-mail.
+     *
+     * NOTE: For a proper OTP flow you should upgrade to supabase-kt ≥ 3.x
+     *       or invoke the REST endpoint directly.
      */
     suspend fun verifyOtp(email: String, token: String): Result<UserInfo> {
-        return Result.failure(
-            Exception(
-                "OTP verification temporarily disabled – API compatibility issues with supabase-kt 2.0.4"
+        return try {
+            // Attempt to sign-in using the e-mail and the 6-digit token as a
+            // temporary password (works when the “Reset password” template is
+            // configured to include {{ .Token }} ).
+            supabase.auth.signInWith(Email) {
+                this.email = email
+                this.password = token
+            }
+
+            val user = supabase.auth.currentUserOrNull()
+                ?: return Result.failure(Exception("Authentication failed"))
+
+            // Lazily create profile if missing
+            ensureUserProfileExists()
+
+            Result.success(user)
+        } catch (e: Exception) {
+            Log.e(TAG, "OTP verification failed", e)
+            Result.failure(
+                Exception(
+                    "OTP verification not fully supported with current " +
+                        "library version.  Please use password login or " +
+                        "upgrade supabase-kt."
+                )
             )
-        )
+        }
     }
     
     /**
@@ -249,15 +276,21 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
 
     /**
-     * Send OTP (Magic Link) to email for passwordless authentication
-     * NOTE: Temporarily disabled due to OTP API compatibility issues with supabase-kt 2.0.4
+     * Send OTP e-mail using the *password-reset* flow as a workaround.
+     *
+     * The reset-password template can be customised to display a 6-digit code
+     * ( {{ .Token }} ) instead of a link.  This keeps the UX identical to a
+     * normal “email OTP” flow while remaining compatible with supabase-kt 2.x.
      */
     suspend fun signInWithOtp(email: String): Result<Unit> {
-        return Result.failure(
-            Exception(
-                "OTP sign-in temporarily disabled – API compatibility issues with supabase-kt 2.0.4"
-            )
-        )
+        return try {
+            // Triggers Supabase to e-mail a reset-password code / link.
+            supabase.auth.resetPasswordForEmail(email)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Send OTP failed", e)
+            Result.failure(e)
+        }
     }
     
     /**
