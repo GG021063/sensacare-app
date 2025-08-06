@@ -1,11 +1,14 @@
 package com.sensacare.veepoo
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.sensacare.veepoo.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
@@ -92,15 +95,38 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * Toggle group that switches between password-based auth and OTP (magic link)
+     * Setup the auth mode tabs (Password vs OTP)
      */
     private fun setupOtpToggle() {
-        binding.authModeToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            when (checkedId) {
-                binding.passwordModeButton.id -> switchAuthMode(AuthMode.PASSWORD)
-                binding.otpModeButton.id       -> switchAuthMode(AuthMode.OTP)
+        // Set initial active tab
+        updateTabAppearance(binding.passwordModeButton, true)
+        updateTabAppearance(binding.otpModeButton, false)
+        
+        // Set click listeners
+        binding.passwordModeButton.setOnClickListener {
+            if (authMode != AuthMode.PASSWORD) {
+                switchAuthMode(AuthMode.PASSWORD)
             }
+        }
+        
+        binding.otpModeButton.setOnClickListener {
+            if (authMode != AuthMode.OTP) {
+                switchAuthMode(AuthMode.OTP)
+            }
+        }
+    }
+
+    private fun updateTabAppearance(tab: TextView, isActive: Boolean) {
+        if (isActive) {
+            // Active: white text on brand-primary background
+            tab.setTextColor(ContextCompat.getColor(this, R.color.white))
+            tab.setBackgroundColor(ContextCompat.getColor(this, R.color.sensacare_primary))
+            tab.typeface = Typeface.DEFAULT_BOLD
+        } else {
+            // Inactive: brand-primary text on transparent background
+            tab.setTextColor(ContextCompat.getColor(this, R.color.sensacare_primary))
+            tab.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
+            tab.typeface = Typeface.DEFAULT
         }
     }
 
@@ -108,13 +134,24 @@ class LoginActivity : AppCompatActivity() {
         authMode = mode
         when (mode) {
             AuthMode.PASSWORD -> {
+                // Update tabs
+                updateTabAppearance(binding.passwordModeButton, true)
+                updateTabAppearance(binding.otpModeButton, false)
+                
+                // Show password container, hide OTP container
                 binding.passwordModeContainer.visibility = View.VISIBLE
                 binding.otpModeContainer.visibility = View.GONE
             }
             AuthMode.OTP -> {
+                // Update tabs
+                updateTabAppearance(binding.passwordModeButton, false)
+                updateTabAppearance(binding.otpModeButton, true)
+                
+                // Hide password container, show OTP container
                 binding.passwordModeContainer.visibility = View.GONE
                 binding.otpModeContainer.visibility = View.VISIBLE
-                // Reset OTP UI
+
+                // Reset OTP UI states
                 binding.otpInputLayout.visibility = View.GONE
                 binding.verifyOtpButton.visibility = View.GONE
                 binding.sendMagicLinkButton.isEnabled = true
@@ -356,4 +393,4 @@ class LoginActivity : AppCompatActivity() {
         super.onDestroy()
         supabaseManager.cleanup()
     }
-} 
+}

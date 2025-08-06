@@ -40,32 +40,45 @@
         android:layout_marginBottom="24dp" />
 
     <!-- Authentication Mode Toggle -->
-    <com.google.android.material.button.MaterialButtonToggleGroup
+    <LinearLayout
         android:id="@+id/authModeToggle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:singleSelection="true"
-        app:selectionRequired="true">
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <com.google.android.material.button.MaterialButton
+        <!-- Password mode tab -->
+        <TextView
             android:id="@+id/passwordModeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Password"
-            android:textSize="12sp"
-            style="?attr/materialButtonOutlinedStyle"
-            android:checked="true" />
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="2dp"
+            android:background="@color/primary"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="PASSWORD"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
 
-        <com.google.android.material.button.MaterialButton
+        <!-- Magic-Link mode tab -->
+        <TextView
             android:id="@+id/otpModeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Magic Link"
-            android:textSize="12sp"
-            style="?attr/materialButtonOutlinedStyle" />
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="OTP"
+            android:textAllCaps="true"
+            android:textColor="@color/primary"
+            android:textSize="11sp" />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+    </LinearLayout>
 
     <!-- Email Input (common to both modes) -->
     <com.google.android.material.textfield.TextInputLayout
@@ -160,7 +173,7 @@
             android:id="@+id/otpInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="We'll send a magic link to your email. No password needed!"
+            android:text="We'll send a 6-digit code to your email. No password needed!"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             android:gravity="center"
@@ -171,7 +184,7 @@
             android:id="@+id/sendMagicLinkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Send Magic Link"
+            android:text="Send OTP Code"
             android:textSize="16sp"
             android:padding="16dp"
             style="@style/Widget.Sensacare.Button.Primary" />

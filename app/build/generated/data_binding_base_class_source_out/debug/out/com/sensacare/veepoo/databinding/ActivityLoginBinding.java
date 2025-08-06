@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sensacare.veepoo.R;
@@ -26,7 +25,7 @@ public final class ActivityLoginBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final MaterialButtonToggleGroup authModeToggle;
+  public final LinearLayout authModeToggle;
 
   @NonNull
   public final TextInputLayout emailInputLayout;
@@ -53,7 +52,7 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final TextView otpInstructions;
 
   @NonNull
-  public final MaterialButton otpModeButton;
+  public final TextView otpModeButton;
 
   @NonNull
   public final LinearLayout otpModeContainer;
@@ -65,7 +64,7 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final TextInputLayout passwordInputLayout;
 
   @NonNull
-  public final MaterialButton passwordModeButton;
+  public final TextView passwordModeButton;
 
   @NonNull
   public final LinearLayout passwordModeContainer;
@@ -91,18 +90,18 @@ public final class ActivityLoginBinding implements ViewBinding {
   @NonNull
   public final TextView welcomeTagline;
 
-  private ActivityLoginBinding(@NonNull LinearLayout rootView,
-      @NonNull MaterialButtonToggleGroup authModeToggle, @NonNull TextInputLayout emailInputLayout,
-      @NonNull MaterialButton getStartedButton, @NonNull MaterialButton loginButton,
-      @NonNull ImageView logoImage, @NonNull TextView offlineQueueStatus,
-      @NonNull TextInputEditText otpInput, @NonNull TextInputLayout otpInputLayout,
-      @NonNull TextView otpInstructions, @NonNull MaterialButton otpModeButton,
-      @NonNull LinearLayout otpModeContainer, @NonNull TextInputEditText passwordInput,
-      @NonNull TextInputLayout passwordInputLayout, @NonNull MaterialButton passwordModeButton,
-      @NonNull LinearLayout passwordModeContainer, @NonNull ProgressBar progressBar,
-      @NonNull MaterialButton sendMagicLinkButton, @NonNull MaterialButton signUpButton,
-      @NonNull TextInputEditText usernameInput, @NonNull MaterialButton verifyOtpButton,
-      @NonNull TextView welcomeHeading, @NonNull TextView welcomeTagline) {
+  private ActivityLoginBinding(@NonNull LinearLayout rootView, @NonNull LinearLayout authModeToggle,
+      @NonNull TextInputLayout emailInputLayout, @NonNull MaterialButton getStartedButton,
+      @NonNull MaterialButton loginButton, @NonNull ImageView logoImage,
+      @NonNull TextView offlineQueueStatus, @NonNull TextInputEditText otpInput,
+      @NonNull TextInputLayout otpInputLayout, @NonNull TextView otpInstructions,
+      @NonNull TextView otpModeButton, @NonNull LinearLayout otpModeContainer,
+      @NonNull TextInputEditText passwordInput, @NonNull TextInputLayout passwordInputLayout,
+      @NonNull TextView passwordModeButton, @NonNull LinearLayout passwordModeContainer,
+      @NonNull ProgressBar progressBar, @NonNull MaterialButton sendMagicLinkButton,
+      @NonNull MaterialButton signUpButton, @NonNull TextInputEditText usernameInput,
+      @NonNull MaterialButton verifyOtpButton, @NonNull TextView welcomeHeading,
+      @NonNull TextView welcomeTagline) {
     this.rootView = rootView;
     this.authModeToggle = authModeToggle;
     this.emailInputLayout = emailInputLayout;
@@ -156,7 +155,7 @@ public final class ActivityLoginBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.authModeToggle;
-      MaterialButtonToggleGroup authModeToggle = ViewBindings.findChildViewById(rootView, id);
+      LinearLayout authModeToggle = ViewBindings.findChildViewById(rootView, id);
       if (authModeToggle == null) {
         break missingId;
       }
@@ -210,7 +209,7 @@ public final class ActivityLoginBinding implements ViewBinding {
       }
 
       id = R.id.otpModeButton;
-      MaterialButton otpModeButton = ViewBindings.findChildViewById(rootView, id);
+      TextView otpModeButton = ViewBindings.findChildViewById(rootView, id);
       if (otpModeButton == null) {
         break missingId;
       }
@@ -234,7 +233,7 @@ public final class ActivityLoginBinding implements ViewBinding {
       }
 
       id = R.id.passwordModeButton;
-      MaterialButton passwordModeButton = ViewBindings.findChildViewById(rootView, id);
+      TextView passwordModeButton = ViewBindings.findChildViewById(rootView, id);
       if (passwordModeButton == null) {
         break missingId;
       }

@@ -173,12 +173,13 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
 
     /**
      * Verify OTP code from email
-     * NOTE: Temporarily disabled due to OtpType enum compatibility issues
+     * NOTE: Temporarily disabled due to OTP API compatibility issues with supabase-kt 2.0.4
      */
     suspend fun verifyOtp(email: String, token: String): Result<UserInfo> {
-        // TODO: Fix OtpType enum issue - different Supabase versions have different enum values
         return Result.failure(
-            Exception("OTP verification temporarily disabled – incompatible OtpType enum in current supabase-kt version")
+            Exception(
+                "OTP verification temporarily disabled – API compatibility issues with supabase-kt 2.0.4"
+            )
         )
     }
     
@@ -249,17 +250,14 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
 
     /**
      * Send OTP (Magic Link) to email for passwordless authentication
+     * NOTE: Temporarily disabled due to OTP API compatibility issues with supabase-kt 2.0.4
      */
     suspend fun signInWithOtp(email: String): Result<Unit> {
-        return try {
-            supabase.auth.signInWith(Email) {
-                this.email = email
-            }
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e(TAG, "Send OTP failed", e)
-            Result.failure(e)
-        }
+        return Result.failure(
+            Exception(
+                "OTP sign-in temporarily disabled – API compatibility issues with supabase-kt 2.0.4"
+            )
+        )
     }
     
     /**
