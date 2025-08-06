@@ -293,7 +293,8 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                val result = supabaseManager.signInWithDemo()
+                Log.d(TAG, "Attempting demo login...")
+                val result = supabaseManager.createDemoUser()
                 result.fold(
                     onSuccess = { userInfo ->
                         Log.d(TAG, "Demo login successful for user: ${userInfo.email}")
@@ -306,13 +307,18 @@ class LoginActivity : AppCompatActivity() {
                         }
                     },
                     onFailure = { exception ->
-                        Log.e(TAG, "Demo login failed", exception)
-                        // Try to create demo user if login fails
-                        val createResult = supabaseManager.createDemoUser()
-                        createResult.fold(
+                        Log.e(TAG, "Demo login failed, trying offline mode", exception)
+                        
+                        // Try offline demo mode as fallback
+                        val offlineResult = supabaseManager.signInWithDemoOffline()
+                        offlineResult.fold(
                             onSuccess = { userInfo ->
-                                Log.d(TAG, "Demo user created and logged in: ${userInfo.email}")
-                                Toast.makeText(this@LoginActivity, "Demo user created and logged in!", Toast.LENGTH_SHORT).show()
+                                Log.d(TAG, "Offline demo login successful for user: ${userInfo.email}")
+                                Toast.makeText(
+                                    this@LoginActivity, 
+                                    "Demo login successful! (Offline mode)", 
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
                                 if (hasCompletedOnboarding()) {
                                     proceedToMainActivity()
@@ -320,11 +326,23 @@ class LoginActivity : AppCompatActivity() {
                                     goToOnboarding()
                                 }
                             },
-                            onFailure = { createException ->
-                                Log.e(TAG, "Demo user creation failed", createException)
+                            onFailure = { offlineException ->
+                                Log.e(TAG, "Offline demo login also failed", offlineException)
+                                val errorMessage = when {
+                                    exception.message?.contains("Invalid login credentials") == true -> {
+                                        "Demo user doesn't exist in Supabase. Please set up the demo user in your Supabase dashboard or use offline mode."
+                                    }
+                                    exception.message?.contains("email already registered") == true -> {
+                                        "Demo user exists but sign-in failed. Please check your Supabase configuration."
+                                    }
+                                    else -> {
+                                        "Demo login failed: ${exception.message}"
+                                    }
+                                }
+                                
                                 Toast.makeText(
                                     this@LoginActivity,
-                                    "Demo login failed: ${createException.message}",
+                                    errorMessage,
                                     Toast.LENGTH_LONG
                                 ).show()
                                 binding.progressBar.visibility = View.GONE

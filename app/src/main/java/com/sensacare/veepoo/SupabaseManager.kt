@@ -1423,7 +1423,7 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
      */
     suspend fun createDemoUser(): Result<UserInfo> {
         return try {
-            // Try to sign up the demo user
+            // First try to sign up the demo user (this will fail if user already exists)
             supabase.auth.signUpWith(Email) {
                 this.email = DEMO_EMAIL
                 this.password = DEMO_PASSWORD
@@ -1439,9 +1439,21 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             Log.d(TAG, "Demo user created successfully: ${user.email}")
             Result.success(user)
         } catch (e: Exception) {
-            Log.e(TAG, "Demo user creation failed", e)
-            // If user already exists, try to sign in
-            return signIn(DEMO_EMAIL, DEMO_PASSWORD)
+            Log.d(TAG, "Demo user creation failed, trying to sign in: ${e.message}")
+            // If sign-up fails (user already exists), try to sign in
+            try {
+                val signInResult = signIn(DEMO_EMAIL, DEMO_PASSWORD)
+                if (signInResult.isSuccess) {
+                    Log.d(TAG, "Demo user sign-in successful")
+                    return signInResult
+                } else {
+                    Log.e(TAG, "Demo user sign-in failed", signInResult.exceptionOrNull())
+                    return Result.failure(Exception("Demo user exists but sign-in failed. Please check your Supabase configuration."))
+                }
+            } catch (signInException: Exception) {
+                Log.e(TAG, "Demo user sign-in exception", signInException)
+                return Result.failure(Exception("Demo user creation and sign-in failed: ${signInException.message}"))
+            }
         }
     }
 
@@ -1450,5 +1462,31 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
      */
     suspend fun signInWithDemo(): Result<UserInfo> {
         return signIn(DEMO_EMAIL, DEMO_PASSWORD)
+    }
+
+    /**
+     * Demo mode for testing without Supabase
+     */
+    suspend fun signInWithDemoOffline(): Result<UserInfo> {
+        return try {
+            // Try to create a simple demo user by signing up
+            supabase.auth.signUpWith(Email) {
+                this.email = DEMO_EMAIL
+                this.password = DEMO_PASSWORD
+            }
+            
+            val user = supabase.auth.currentUserOrNull()
+                ?: return Result.failure(Exception("Failed to create demo user"))
+            
+            // Save demo session locally
+            saveUserSession(user)
+            _authState.value = AuthState.Authenticated(user)
+            
+            Log.d(TAG, "Demo offline login successful")
+            Result.success(user)
+        } catch (e: Exception) {
+            Log.e(TAG, "Demo offline login failed", e)
+            Result.failure(e)
+        }
     }
 }
