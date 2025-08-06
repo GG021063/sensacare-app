@@ -28,6 +28,9 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final LinearLayout authModeToggle;
 
   @NonNull
+  public final MaterialButton demoLoginButton;
+
+  @NonNull
   public final TextInputLayout emailInputLayout;
 
   @NonNull
@@ -91,19 +94,20 @@ public final class ActivityLoginBinding implements ViewBinding {
   public final TextView welcomeTagline;
 
   private ActivityLoginBinding(@NonNull LinearLayout rootView, @NonNull LinearLayout authModeToggle,
-      @NonNull TextInputLayout emailInputLayout, @NonNull MaterialButton getStartedButton,
-      @NonNull MaterialButton loginButton, @NonNull ImageView logoImage,
-      @NonNull TextView offlineQueueStatus, @NonNull TextInputEditText otpInput,
-      @NonNull TextInputLayout otpInputLayout, @NonNull TextView otpInstructions,
-      @NonNull TextView otpModeButton, @NonNull LinearLayout otpModeContainer,
-      @NonNull TextInputEditText passwordInput, @NonNull TextInputLayout passwordInputLayout,
-      @NonNull TextView passwordModeButton, @NonNull LinearLayout passwordModeContainer,
-      @NonNull ProgressBar progressBar, @NonNull MaterialButton sendMagicLinkButton,
-      @NonNull MaterialButton signUpButton, @NonNull TextInputEditText usernameInput,
-      @NonNull MaterialButton verifyOtpButton, @NonNull TextView welcomeHeading,
-      @NonNull TextView welcomeTagline) {
+      @NonNull MaterialButton demoLoginButton, @NonNull TextInputLayout emailInputLayout,
+      @NonNull MaterialButton getStartedButton, @NonNull MaterialButton loginButton,
+      @NonNull ImageView logoImage, @NonNull TextView offlineQueueStatus,
+      @NonNull TextInputEditText otpInput, @NonNull TextInputLayout otpInputLayout,
+      @NonNull TextView otpInstructions, @NonNull TextView otpModeButton,
+      @NonNull LinearLayout otpModeContainer, @NonNull TextInputEditText passwordInput,
+      @NonNull TextInputLayout passwordInputLayout, @NonNull TextView passwordModeButton,
+      @NonNull LinearLayout passwordModeContainer, @NonNull ProgressBar progressBar,
+      @NonNull MaterialButton sendMagicLinkButton, @NonNull MaterialButton signUpButton,
+      @NonNull TextInputEditText usernameInput, @NonNull MaterialButton verifyOtpButton,
+      @NonNull TextView welcomeHeading, @NonNull TextView welcomeTagline) {
     this.rootView = rootView;
     this.authModeToggle = authModeToggle;
+    this.demoLoginButton = demoLoginButton;
     this.emailInputLayout = emailInputLayout;
     this.getStartedButton = getStartedButton;
     this.loginButton = loginButton;
@@ -157,6 +161,12 @@ public final class ActivityLoginBinding implements ViewBinding {
       id = R.id.authModeToggle;
       LinearLayout authModeToggle = ViewBindings.findChildViewById(rootView, id);
       if (authModeToggle == null) {
+        break missingId;
+      }
+
+      id = R.id.demoLoginButton;
+      MaterialButton demoLoginButton = ViewBindings.findChildViewById(rootView, id);
+      if (demoLoginButton == null) {
         break missingId;
       }
 
@@ -286,11 +296,12 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLoginBinding((LinearLayout) rootView, authModeToggle, emailInputLayout,
-          getStartedButton, loginButton, logoImage, offlineQueueStatus, otpInput, otpInputLayout,
-          otpInstructions, otpModeButton, otpModeContainer, passwordInput, passwordInputLayout,
-          passwordModeButton, passwordModeContainer, progressBar, sendMagicLinkButton, signUpButton,
-          usernameInput, verifyOtpButton, welcomeHeading, welcomeTagline);
+      return new ActivityLoginBinding((LinearLayout) rootView, authModeToggle, demoLoginButton,
+          emailInputLayout, getStartedButton, loginButton, logoImage, offlineQueueStatus, otpInput,
+          otpInputLayout, otpInstructions, otpModeButton, otpModeContainer, passwordInput,
+          passwordInputLayout, passwordModeButton, passwordModeContainer, progressBar,
+          sendMagicLinkButton, signUpButton, usernameInput, verifyOtpButton, welcomeHeading,
+          welcomeTagline);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

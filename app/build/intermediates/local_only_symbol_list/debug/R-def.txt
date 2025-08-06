@@ -104,6 +104,7 @@ id consentTypeSpinner
 id dateRangeSpinner
 id debugModeSwitch
 id debugModeText
+id demoLoginButton
 id deviceRecyclerView
 id diagnosticButton
 id emailInputLayout

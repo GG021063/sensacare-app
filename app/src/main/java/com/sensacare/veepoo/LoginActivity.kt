@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
         setupLoginButton()
         setupGetStartedButton()
         setupSignUpButton()
+        setupDemoLoginButton()
         setupOtpToggle()
         setupOtpButtons()
     }
@@ -91,6 +92,15 @@ class LoginActivity : AppCompatActivity() {
             }
 
             performSignUp(username, password)
+        }
+    }
+
+    /**
+     * Setup demo login button for testing
+     */
+    private fun setupDemoLoginButton() {
+        binding.demoLoginButton.setOnClickListener {
+            performDemoLogin()
         }
     }
 
@@ -230,21 +240,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * Perform a Supabase sign-up and immediately log the user in
+     * Perform sign-up with the given credentials
      */
     private fun performSignUp(username: String, password: String) {
         binding.progressBar.visibility = View.VISIBLE
         binding.signUpButton.isEnabled = false
-        binding.loginButton.isEnabled = false
 
         lifecycleScope.launch {
             try {
                 val result = supabaseManager.signUp(username, password)
                 result.fold(
-                    onSuccess = { userInfo: UserInfo ->
-                        Log.d(TAG, "Sign-up successful for user: ${userInfo.email}")
-                        Toast.makeText(this@LoginActivity, "Account created", Toast.LENGTH_SHORT).show()
-                        // After sign-up, continue same flow as login
+                    onSuccess = { userInfo ->
+                        Log.d(TAG, "Sign up successful for user: ${userInfo.email}")
+                        Toast.makeText(this@LoginActivity, "Account created successfully!", Toast.LENGTH_SHORT).show()
+
                         if (hasCompletedOnboarding()) {
                             proceedToMainActivity()
                         } else {
@@ -252,27 +261,87 @@ class LoginActivity : AppCompatActivity() {
                         }
                     },
                     onFailure = { exception ->
-                        Log.e(TAG, "Sign-up failed", exception)
+                        Log.e(TAG, "Sign up failed", exception)
                         Toast.makeText(
                             this@LoginActivity,
-                            "Sign-up failed: ${exception.message}",
+                            "Sign up failed: ${exception.message}",
                             Toast.LENGTH_LONG
                         ).show()
                         binding.progressBar.visibility = View.GONE
                         binding.signUpButton.isEnabled = true
-                        binding.loginButton.isEnabled = true
                     }
                 )
             } catch (e: Exception) {
-                Log.e(TAG, "Sign-up error", e)
+                Log.e(TAG, "Sign up error", e)
                 Toast.makeText(
                     this@LoginActivity,
-                    "Sign-up error: ${e.message}",
+                    "Error: ${e.message}",
                     Toast.LENGTH_LONG
                 ).show()
                 binding.progressBar.visibility = View.GONE
                 binding.signUpButton.isEnabled = true
-                binding.loginButton.isEnabled = true
+            }
+        }
+    }
+
+    /**
+     * Perform demo login for testing
+     */
+    private fun performDemoLogin() {
+        binding.progressBar.visibility = View.VISIBLE
+        binding.demoLoginButton.isEnabled = false
+
+        lifecycleScope.launch {
+            try {
+                val result = supabaseManager.signInWithDemo()
+                result.fold(
+                    onSuccess = { userInfo ->
+                        Log.d(TAG, "Demo login successful for user: ${userInfo.email}")
+                        Toast.makeText(this@LoginActivity, "Demo login successful!", Toast.LENGTH_SHORT).show()
+
+                        if (hasCompletedOnboarding()) {
+                            proceedToMainActivity()
+                        } else {
+                            goToOnboarding()
+                        }
+                    },
+                    onFailure = { exception ->
+                        Log.e(TAG, "Demo login failed", exception)
+                        // Try to create demo user if login fails
+                        val createResult = supabaseManager.createDemoUser()
+                        createResult.fold(
+                            onSuccess = { userInfo ->
+                                Log.d(TAG, "Demo user created and logged in: ${userInfo.email}")
+                                Toast.makeText(this@LoginActivity, "Demo user created and logged in!", Toast.LENGTH_SHORT).show()
+
+                                if (hasCompletedOnboarding()) {
+                                    proceedToMainActivity()
+                                } else {
+                                    goToOnboarding()
+                                }
+                            },
+                            onFailure = { createException ->
+                                Log.e(TAG, "Demo user creation failed", createException)
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    "Demo login failed: ${createException.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                binding.progressBar.visibility = View.GONE
+                                binding.demoLoginButton.isEnabled = true
+                            }
+                        )
+                    }
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Demo login error", e)
+                Toast.makeText(
+                    this@LoginActivity,
+                    "Error: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                binding.progressBar.visibility = View.GONE
+                binding.demoLoginButton.isEnabled = true
             }
         }
     }

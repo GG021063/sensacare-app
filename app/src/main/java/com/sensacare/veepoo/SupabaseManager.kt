@@ -172,20 +172,26 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
 
     /**
-     * Verify OTP code from email (fallback approach)
-     *
-     * Supabase-kt 2.0.x does not expose the “verifyOtp” helper that newer
-     * versions contain.  As a pragmatic workaround we treat the token as a
-     * temporary password set by the backend’s **Password Reset** e-mail.
-     *
-     * NOTE: For a proper OTP flow you should upgrade to supabase-kt ≥ 3.x
-     *       or invoke the REST endpoint directly.
+     * Send OTP e-mail using password reset flow (compatible with Supabase 2.0.4)
+     */
+    suspend fun signInWithOtp(email: String): Result<Unit> {
+        return try {
+            // Use password reset flow to send OTP code
+            supabase.auth.resetPasswordForEmail(email)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Send OTP failed", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Verify OTP code from email using password reset flow (compatible with Supabase 2.0.4)
      */
     suspend fun verifyOtp(email: String, token: String): Result<UserInfo> {
         return try {
-            // Attempt to sign-in using the e-mail and the 6-digit token as a
-            // temporary password (works when the “Reset password” template is
-            // configured to include {{ .Token }} ).
+            // Use the token as a temporary password for sign-in
+            // This works when the password reset email template includes the token
             supabase.auth.signInWith(Email) {
                 this.email = email
                 this.password = token
@@ -200,13 +206,7 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             Result.success(user)
         } catch (e: Exception) {
             Log.e(TAG, "OTP verification failed", e)
-            Result.failure(
-                Exception(
-                    "OTP verification not fully supported with current " +
-                        "library version.  Please use password login or " +
-                        "upgrade supabase-kt."
-                )
-            )
+            Result.failure(e)
         }
     }
     
@@ -271,24 +271,6 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             Result.success(user)
         } catch (e: Exception) {
             Log.e(TAG, "Sign up failed", e)
-            Result.failure(e)
-        }
-    }
-
-    /**
-     * Send OTP e-mail using the *password-reset* flow as a workaround.
-     *
-     * The reset-password template can be customised to display a 6-digit code
-     * ( {{ .Token }} ) instead of a link.  This keeps the UX identical to a
-     * normal “email OTP” flow while remaining compatible with supabase-kt 2.x.
-     */
-    suspend fun signInWithOtp(email: String): Result<Unit> {
-        return try {
-            // Triggers Supabase to e-mail a reset-password code / link.
-            supabase.auth.resetPasswordForEmail(email)
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Log.e(TAG, "Send OTP failed", e)
             Result.failure(e)
         }
     }
@@ -1434,5 +1416,39 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
         
         @Serializable
         data class RecordConsent(val consent: ConsentRecord) : SyncOperation()
+    }
+
+    /**
+     * Create a demo user account for testing
+     */
+    suspend fun createDemoUser(): Result<UserInfo> {
+        return try {
+            // Try to sign up the demo user
+            supabase.auth.signUpWith(Email) {
+                this.email = DEMO_EMAIL
+                this.password = DEMO_PASSWORD
+            }
+            
+            // Get the current user info after successful sign-up
+            val user = supabase.auth.currentUserOrNull()
+                ?: return Result.failure(Exception("Demo user creation succeeded but no user found"))
+            
+            // Create user profile
+            ensureUserProfileExists()
+            
+            Log.d(TAG, "Demo user created successfully: ${user.email}")
+            Result.success(user)
+        } catch (e: Exception) {
+            Log.e(TAG, "Demo user creation failed", e)
+            // If user already exists, try to sign in
+            return signIn(DEMO_EMAIL, DEMO_PASSWORD)
+        }
+    }
+
+    /**
+     * Sign in with demo credentials
+     */
+    suspend fun signInWithDemo(): Result<UserInfo> {
+        return signIn(DEMO_EMAIL, DEMO_PASSWORD)
     }
 }

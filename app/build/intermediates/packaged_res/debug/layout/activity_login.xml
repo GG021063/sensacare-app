@@ -230,6 +230,17 @@
             android:padding="12dp"
             style="?attr/materialButtonOutlinedStyle" />
 
+        <!-- Demo Login Button (for testing) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/demoLoginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Demo Login (admin@sensacare.com)"
+            android:textSize="14sp"
+            android:padding="12dp"
+            style="?attr/materialButtonOutlinedStyle" />
+
     </LinearLayout>
 
     <!-- Progress Bar -->
