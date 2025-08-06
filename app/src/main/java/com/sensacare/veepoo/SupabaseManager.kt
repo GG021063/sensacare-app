@@ -211,8 +211,23 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             val user = supabase.auth.currentUserOrNull()
                 ?: return Result.failure(Exception("Sign up succeeded but no user found"))
             
-            // Create initial user profile
-            createUserProfile(user.id, user.email ?: "")
+            /*
+             * IMPORTANT:
+             * ------------------------------------------------------------
+             * Creating the user_profile record here causes a “Database error
+             * saving new user” because RLS policies on `user_profiles`
+             * require the auth.user row to exist AND a valid JWT that
+             * already belongs to that user.
+             *
+             * During the sign-up request `Gotrue` has not finished inserting
+             * the auth.users row yet, so PostgREST blocks our insert.
+             *
+             * Solution:  
+             *   1. Let Supabase finish creating the auth user first.  
+             *   2. We will create the profile lazily ‑ either on first
+             *      login (`ensureUserProfileExists()`) or from a dedicated
+             *      profile-setup screen.
+             */
             
             Result.success(user)
         } catch (e: Exception) {
