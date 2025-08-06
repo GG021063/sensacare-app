@@ -17,7 +17,6 @@ class LoginActivity : AppCompatActivity() {
     
     companion object {
         private const val TAG = "LoginActivity"
-        private const val DEMO_OTP = "123456" // Demo OTP code
     }
     
     private lateinit var binding: ActivityLoginBinding
@@ -30,8 +29,30 @@ class LoginActivity : AppCompatActivity() {
         
         supabaseManager = SupabaseManager(this)
         
+        // Initialize session restoration
+        initializeSession()
+        
         setupUI()
         setupOTPInputs()
+    }
+    
+    private fun initializeSession() {
+        lifecycleScope.launch {
+            try {
+                val result = supabaseManager.initializeSession()
+                if (result.isSuccess) {
+                    // Check if user is already authenticated
+                    val currentUser = supabaseManager.getCurrentUser()
+                    if (currentUser != null) {
+                        Log.d(TAG, "User already authenticated: ${currentUser.email}")
+                        navigateToMain()
+                        return@launch
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Session initialization failed", e)
+            }
+        }
     }
     
     private fun setupUI() {
@@ -128,21 +149,18 @@ class LoginActivity : AppCompatActivity() {
                 binding.verifyCodeButton.isEnabled = false
                 binding.verifyCodeButton.text = "Verifying..."
                 
-                // For demo purposes, accept the hardcoded OTP
-                if (otpCode == DEMO_OTP) {
-                    delay(1000) // Simulate verification delay
-                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                // Get the email that was used to send the OTP
+                val email = binding.emailInput.text.toString().trim()
+                
+                // Verify OTP with Supabase
+                val result = supabaseManager.verifyOTP(email, otpCode)
+                if (result.isSuccess) {
+                    val user = result.getOrNull()
+                    Toast.makeText(this@LoginActivity, "Login successful! Welcome ${user?.email}", Toast.LENGTH_SHORT).show()
                     navigateToMain()
                 } else {
-                    // Try actual Supabase verification
-                    val result = supabaseManager.verifyOTP(otpCode)
-                    if (result.isSuccess) {
-                        Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
-                        navigateToMain()
-                    } else {
-                        Toast.makeText(this@LoginActivity, "Invalid code. Please try again.", Toast.LENGTH_LONG).show()
-                        clearOTPInputs()
-                    }
+                    Toast.makeText(this@LoginActivity, "Invalid code. Please try again.", Toast.LENGTH_LONG).show()
+                    clearOTPInputs()
                 }
                 
             } catch (e: Exception) {
@@ -151,7 +169,7 @@ class LoginActivity : AppCompatActivity() {
                 clearOTPInputs()
             } finally {
                 binding.verifyCodeButton.isEnabled = true
-                binding.verifyCodeButton.text = "Verify Code"
+                binding.verifyCodeButton.text = "VERIFY CODE"
             }
         }
     }

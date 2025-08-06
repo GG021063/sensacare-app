@@ -172,7 +172,7 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
 
     /**
-     * Send OTP code to email
+     * Send OTP code to email for sign-in
      */
     suspend fun sendOTP(email: String): Result<Unit> {
         return try {
@@ -195,49 +195,33 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
 
     /**
-     * Verify OTP code from email using password reset flow (compatible with Supabase 2.0.4)
+     * Verify OTP code for sign-in using password reset flow
      */
-    suspend fun verifyOtp(email: String, token: String): Result<UserInfo> {
+    suspend fun verifyOTP(email: String, otpCode: String): Result<UserInfo> {
         return try {
-            // Use the token as a temporary password for sign-in
-            // This works when the password reset email template includes the token
+            Log.d(TAG, "Verifying OTP code for email: $email")
+            
+            // Use the OTP code as a temporary password for sign-in
+            // This works when the password reset email template includes the OTP code
             supabase.auth.signInWith(Email) {
                 this.email = email
-                this.password = token
+                this.password = otpCode
             }
-
+            
+            // Get the current user after successful verification
             val user = supabase.auth.currentUserOrNull()
-                ?: return Result.failure(Exception("Authentication failed"))
-
-            // Lazily create profile if missing
+                ?: return Result.failure(Exception("OTP verification succeeded but no user found"))
+            
+            // Create user profile if it doesn't exist yet
             ensureUserProfileExists()
-
+            
+            Log.d(TAG, "OTP verification successful for user: ${user.email}")
             Result.success(user)
-        } catch (e: Exception) {
-            Log.e(TAG, "OTP verification failed", e)
-            Result.failure(e)
-        }
-    }
-    
-    /**
-     * Verify OTP code
-     */
-    suspend fun verifyOTP(otpCode: String): Result<Unit> {
-        return try {
-            Log.d(TAG, "Verifying OTP code")
-            
-            // For now, accept any 6-digit code as demo
-            // TODO: Implement proper Supabase OTP verification
-            if (otpCode.length == 6 && otpCode.all { it.isDigit() }) {
-                Log.d(TAG, "Demo OTP verification successful")
-                Result.success(Unit)
-            } else {
-                Log.w(TAG, "Invalid OTP format")
-                Result.failure(Exception("Invalid OTP code"))
-            }
             
         } catch (e: Exception) {
-            Log.e(TAG, "OTP verification failed", e)
+            Log.e(TAG, "OTP verification failed for email: $email", e)
+            Log.e(TAG, "Error type: ${e.javaClass.simpleName}")
+            Log.e(TAG, "Error message: ${e.message}")
             Result.failure(e)
         }
     }
@@ -1185,6 +1169,13 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
     }
     
     /**
+     * Get current user
+     */
+    fun getCurrentUser(): UserInfo? {
+        return supabase.auth.currentUserOrNull()
+    }
+    
+    /**
      * Save user session information
      */
     private fun saveUserSession(user: UserInfo) {
@@ -1534,6 +1525,31 @@ class SupabaseManager(private val context: Context) : CoroutineScope {
             
         } catch (e: Exception) {
             Log.e(TAG, "Failed to create offline demo session", e)
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Initialize and restore session on app start
+     */
+    suspend fun initializeSession(): Result<Unit> {
+        return try {
+            Log.d(TAG, "Initializing session...")
+            
+            // Check if we have a valid session
+            val user = supabase.auth.currentUserOrNull()
+            if (user != null) {
+                Log.d(TAG, "Session restored for user: ${user.email}")
+                _authState.value = AuthState.Authenticated(user)
+            } else {
+                Log.d(TAG, "No valid session found")
+                _authState.value = AuthState.NotAuthenticated
+            }
+            
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to initialize session", e)
+            _authState.value = AuthState.NotAuthenticated
             Result.failure(e)
         }
     }
